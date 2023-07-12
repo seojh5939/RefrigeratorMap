@@ -6,7 +6,8 @@ For building and running the application you need:
 - Flutter 3.10.5
 - Dart 3.68.1
 ### Installation
-> $git clone git@github.com:seojh5939/RefrigeratorMap.git \n
+> $git clone git@github.com:seojh5939/RefrigeratorMap.git
+
 > flutter pub get
 
 ### Environment
