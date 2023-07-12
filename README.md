@@ -8,7 +8,7 @@ For building and running the application you need:
 ### Installation
 > $git clone git@github.com:seojh5939/RefrigeratorMap.git
 
-> flutter pub get
+> $flutter pub get
 
 ### Environment
 <img src="https://img.shields.io/badge/Visual%20Studio%20Code-007ACC?style=flat-square&logo=Visual%20Studio%20Code&logoColor=white">
