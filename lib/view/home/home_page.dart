@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:refrigerator_map/view/common/bottom_navi_bar.dart';
 import 'package:refrigerator_map/view/home/home_category_list.dart';
 
 /// 메인 페이지
@@ -51,6 +52,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: BottomNaviBar(),
     );
   }
 }

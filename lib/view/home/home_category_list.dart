@@ -57,7 +57,7 @@ class HomeCategoryList extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(
-            bottom: 75,
+            bottom: 50,
           ),
         ),
       ],
