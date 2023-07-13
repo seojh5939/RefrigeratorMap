@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:refrigerator_map/style/color.dart';
 
 class CustomFloatingActionButton extends StatelessWidget {
   CustomFloatingActionButton({
@@ -27,7 +28,7 @@ class CustomFloatingActionButton extends StatelessWidget {
           children: [
             Icon(
               Icons.add,
-              color: Colors.white,
+              color: ColorList.white,
             ),
             SizedBox(
               width: 5,
@@ -37,7 +38,7 @@ class CustomFloatingActionButton extends StatelessWidget {
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: ColorList.white,
               ),
             ),
           ],
