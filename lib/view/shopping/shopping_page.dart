@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:refrigerator_map/view/common/bottom_navi_bar.dart';
 import 'package:refrigerator_map/viewModel/shopping_viewmodel.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -42,6 +43,7 @@ class ShoppingPage extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNaviBar(),
     );
   }
 }
