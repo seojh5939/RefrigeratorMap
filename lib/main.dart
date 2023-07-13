@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:refrigerator_map/view/home/home_page.dart';
+import 'package:refrigerator_map/viewModel/bottom_navi_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 late SharedPreferences prefs;
@@ -10,7 +11,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        // ChangeNotifierProvider(create: (context) => ),
+        ChangeNotifierProvider(create: (context) => BottomNaviViewModel()),
       ],
       child: const MyApp(),
     ),
