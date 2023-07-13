@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:refrigerator_map/view/common/bottom_navi_bar.dart';
+import 'package:refrigerator_map/view/common/floating_action_button.dart';
 import 'package:refrigerator_map/view/home/home_category_list.dart';
+import 'package:refrigerator_map/view/refrigerator/add_refrigerator_page.dart';
 
 /// 메인 페이지
 class HomePage extends StatelessWidget {
@@ -18,40 +20,16 @@ class HomePage extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: OutlinedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll(
-            Colors.black87,
-          ),
-        ),
-        onPressed: () {},
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 15,
-            bottom: 15,
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.add,
-                color: Colors.white,
+      floatingActionButton: CustomFloatingActionButton(
+          title: "식재료 추가",
+          onTab: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => AddRefrigeratorPage(),
               ),
-              SizedBox(
-                width: 5,
-              ),
-              Text(
-                "식재료 추가",
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            );
+          }),
       bottomNavigationBar: BottomNaviBar(),
     );
   }
