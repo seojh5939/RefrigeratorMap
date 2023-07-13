@@ -41,9 +41,8 @@ class BottomNaviBar extends StatelessWidget {
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "홈"),
         BottomNavigationBarItem(
-            icon: Icon(Icons.local_grocery_store_outlined), label: "장보기"),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined), label: "식재료"),
+            icon: Icon(Icons.local_grocery_store), label: "장보기"),
+        BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: "식재료"),
       ],
     );
   }
