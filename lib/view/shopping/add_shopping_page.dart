@@ -6,77 +6,22 @@ import 'package:refrigerator_map/viewModel/shopping_viewmodel.dart';
 
 /// 장보기 목록 추가 페이지
 class AddShoppingPage extends StatefulWidget {
-  AddShoppingPage({super.key});
+  AddShoppingPage({required this.title});
+  String title;
 
   @override
   State<AddShoppingPage> createState() => _AddShoppingPageState();
 }
 
 class _AddShoppingPageState extends State<AddShoppingPage> {
-  final _formKey = GlobalKey<FormState>();
-  final titleController = TextEditingController();
+  List<Shopping> tempList = [];
   final contentController = TextEditingController();
   final amountController = TextEditingController();
 
-  Future<void> showAlartDialog() async {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text("타이틀 입력"),
-        content: ListTile(
-          title: Text("장보기목록 타이틀을 입력해주세요."),
-          subtitle: Form(
-            key: _formKey,
-            child: TextFormField(
-              autovalidateMode: AutovalidateMode.always,
-              controller: titleController,
-              decoration: InputDecoration(
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.orange),
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty)
-                  return '장보기 제목은 필수로 입력하셔야합니다.';
-                return null;
-              },
-            ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                Navigator.pop(context);
-              }
-            },
-            child: Text("예"),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
-            child: Text("아니오"),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (titleController.text == null || titleController.text == "") {
-        await showAlartDialog();
-      }
-    });
     ShoppingViewModel viewModel = context.read<ShoppingViewModel>();
+    tempList = [...viewModel.shoppingList];
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -140,9 +85,9 @@ class _AddShoppingPageState extends State<AddShoppingPage> {
                       backgroundColor: MaterialStateProperty.all(Colors.orange),
                       elevation: MaterialStateProperty.all(3)),
                   onPressed: () {
-                    viewModel.addShopingList(
+                    tempList.add(
                       Shopping(
-                        title: titleController.text,
+                        title: widget.title,
                         dttm: "dttm",
                         content: contentController.text,
                         amount: int.parse(amountController.text),
@@ -162,7 +107,11 @@ class _AddShoppingPageState extends State<AddShoppingPage> {
               child: ListView.builder(
                 itemCount: viewModel.shoppingList.length,
                 itemBuilder: (context, index) {
-                  return AddShoppingItem(index: index);
+                  return AddShoppingItem(
+                    index: index,
+                    title: widget.title,
+                    list: tempList,
+                  );
                 },
               ),
             ),
@@ -173,7 +122,10 @@ class _AddShoppingPageState extends State<AddShoppingPage> {
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.orange),
                       elevation: MaterialStateProperty.all(3)),
-                  onPressed: () {},
+                  onPressed: () {
+                    viewModel.deepCopyShoppingList(tempList);
+                    Navigator.pop(context);
+                  },
                   child: Text(
                     "저장",
                     style: TextStyle(

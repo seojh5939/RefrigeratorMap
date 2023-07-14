@@ -25,6 +25,12 @@ class ShoppingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  deepCopyShoppingList(List<Shopping> data) {
+    shoppingList.addAll(data);
+    save();
+    notifyListeners();
+  }
+
   addShopingList(Shopping data) {
     shoppingList.add(data);
     save();
@@ -45,6 +51,7 @@ class ShoppingViewModel extends ChangeNotifier {
 
   refreshCheckBox(int index, bool changeValue) {
     shoppingList[index].isCompleted = changeValue;
+    save();
     notifyListeners();
   }
 
