@@ -11,39 +11,10 @@ class CustomFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(
-          Colors.black87,
-        ),
-      ),
+    return FloatingActionButton(
+      backgroundColor: ColorList.black,
       onPressed: onTab,
-      child: Padding(
-        padding: const EdgeInsets.only(
-          top: 15,
-          bottom: 15,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.add,
-              color: ColorList.white,
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: ColorList.white,
-              ),
-            ),
-          ],
-        ),
-      ),
+      child: Icon(Icons.add, color: ColorList.white),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:refrigerator_map/view/common/calendar.dart';
 import 'package:refrigerator_map/view/shopping/add_shopping_page.dart';
 import 'package:refrigerator_map/view/common/bottom_navi_bar.dart';
 import 'package:refrigerator_map/view/common/floating_action_button.dart';
+import 'package:refrigerator_map/view/shopping/shopping_item.dart';
 import 'package:refrigerator_map/viewModel/shopping_viewmodel.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -17,7 +18,7 @@ class ShoppingPage extends StatefulWidget {
 }
 
 class _ShoppingPageState extends State<ShoppingPage> {
-  List<bool> isSelected = <bool>[true, false];
+  final List<bool> _isSelected = [true, false];
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +32,14 @@ class _ShoppingPageState extends State<ShoppingPage> {
                 onPressed: (index) {
                   setState(
                     () {
-                      for (int i = 0; i < isSelected.length; i++) {
-                        isSelected[i] = i == index;
+                      for (int i = 0; i < _isSelected.length; i++) {
+                        _isSelected[i] = i == index;
                       }
                     },
                   );
                 },
                 fillColor: Colors.black,
-                isSelected: isSelected,
+                isSelected: _isSelected,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -46,7 +47,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                       "장보기 목록",
                       style: TextStyle(
                         fontSize: 17,
-                        color: isSelected[0] == true
+                        color: _isSelected[0] == true
                             ? ColorList.white
                             : ColorList.black,
                       ),
@@ -58,7 +59,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                       "장보기 완료",
                       style: TextStyle(
                         fontSize: 17,
-                        color: isSelected[1] == true
+                        color: _isSelected[1] == true
                             ? ColorList.white
                             : ColorList.black,
                       ),
@@ -66,11 +67,13 @@ class _ShoppingPageState extends State<ShoppingPage> {
                   ),
                 ],
               ),
+              // 장보기 item
+              ShoppingItem(isSelected: _isSelected),
             ],
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: CustomFloatingActionButton(
         title: "장보기 추가",
         onTab: () {
