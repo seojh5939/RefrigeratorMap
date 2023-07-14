@@ -43,6 +43,11 @@ class ShoppingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  refreshCheckBox(int index, bool changeValue) {
+    shoppingList[index].isCompleted = changeValue;
+    notifyListeners();
+  }
+
   save() {
     List list = shoppingList.map((shopping) => shopping.toJson()).toList();
     String jsonString = jsonEncode(list);

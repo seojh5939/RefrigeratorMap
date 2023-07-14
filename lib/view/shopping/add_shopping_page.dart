@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:refrigerator_map/data/model/shopping.dart';
 import 'package:refrigerator_map/view/shopping/add_shopping_item.dart';
+import 'package:refrigerator_map/viewModel/shopping_viewmodel.dart';
 
 /// 장보기 목록 추가 페이지
 class AddShoppingPage extends StatelessWidget {
   AddShoppingPage({super.key});
 
-  final titleController = TextEditingController();
+  final contentController = TextEditingController();
   final amountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    ShoppingViewModel viewModel = context.read<ShoppingViewModel>();
     return Scaffold(
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
@@ -34,7 +37,7 @@ class AddShoppingPage extends StatelessWidget {
                   subtitle: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: TextField(
-                      controller: titleController,
+                      controller: contentController,
                       decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
@@ -73,7 +76,16 @@ class AddShoppingPage extends StatelessWidget {
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.orange),
                       elevation: MaterialStateProperty.all(3)),
-                  onPressed: () {},
+                  onPressed: () {
+                    viewModel.addShopingList(
+                      Shopping(
+                        title: "test",
+                        dttm: "dttm",
+                        content: contentController.text,
+                        amount: int.parse(amountController.text),
+                      ),
+                    );
+                  },
                   child: Text(
                     "등록",
                     style: TextStyle(
@@ -85,8 +97,9 @@ class AddShoppingPage extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
+                itemCount: viewModel.shoppingList.length,
                 itemBuilder: (context, index) {
-                  return AddShoppingItem();
+                  return AddShoppingItem(index: index);
                 },
               ),
             ),
