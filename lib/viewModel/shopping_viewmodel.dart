@@ -48,6 +48,8 @@ class ShoppingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // {'key' : List<Shopping>, 'key2' : List<Shopping>}
+
   save() {
     List list = shoppingList.map((shopping) => shopping.toJson()).toList();
     String jsonString = jsonEncode(list);
