@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       floatingActionButton: CustomFloatingActionButton(
           title: "식재료 추가",
           onTab: () {
