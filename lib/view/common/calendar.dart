@@ -19,11 +19,10 @@ class CustomCalendar extends StatelessWidget {
             .focusedDay
         : "";
   }
+
   String widgetName;
-
-  var viewModel;
-
-  var focusedDay;
+  dynamic viewModel;
+  dynamic focusedDay;
 
   @override
   Widget build(BuildContext context) {

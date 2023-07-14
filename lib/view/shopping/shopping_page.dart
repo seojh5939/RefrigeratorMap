@@ -21,7 +21,6 @@ class _ShoppingPageState extends State<ShoppingPage> {
 
   @override
   Widget build(BuildContext context) {
-    ShoppingViewModel viewModel = context.read<ShoppingViewModel>();
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -30,13 +29,14 @@ class _ShoppingPageState extends State<ShoppingPage> {
               CustomCalendar(widgetName: context.widget.toString()),
               ToggleButtons(
                 onPressed: (index) {
-                  setState(() {
-                    for (int i = 0; i < isSelected.length; i++) {
-                      isSelected[i] = i == index;
-                    }
-                  });
+                  setState(
+                    () {
+                      for (int i = 0; i < isSelected.length; i++) {
+                        isSelected[i] = i == index;
+                      }
+                    },
+                  );
                 },
-                selectedBorderColor: Colors.red[700],
                 fillColor: Colors.black,
                 isSelected: isSelected,
                 children: [
@@ -46,6 +46,9 @@ class _ShoppingPageState extends State<ShoppingPage> {
                       "장보기 목록",
                       style: TextStyle(
                         fontSize: 17,
+                        color: isSelected[0] == true
+                            ? ColorList.white
+                            : ColorList.black,
                       ),
                     ),
                   ),
@@ -55,6 +58,9 @@ class _ShoppingPageState extends State<ShoppingPage> {
                       "장보기 완료",
                       style: TextStyle(
                         fontSize: 17,
+                        color: isSelected[1] == true
+                            ? ColorList.white
+                            : ColorList.black,
                       ),
                     ),
                   ),
