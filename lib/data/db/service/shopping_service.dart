@@ -1,14 +1,63 @@
+import 'package:refrigerator_map/data/db/db_helper.dart';
 import 'package:refrigerator_map/data/model/shopping.dart';
 
 class ShoppingService {
-  addShoppingList(Shopping data) {}
-
-  // 전체 조회
-  List<Shopping> getAllShoppingList() {
-    return [];
+  addShoppingList(Shopping data) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+      INSERT INTO ${Shopping.tableName}(
+            ${ShoppingField.id},
+            ${ShoppingField.title},
+            ${ShoppingField.regdate},
+            ${ShoppingField.isdone},
+            ) VALUES(?, ?, ?)
+    ''';
+    await db.rawInsert(sql, [data.title, data.regdate, data.isdone]);
   }
 
-  updateShoppingList(int id) {}
+  // 전체 조회
+  Future<List<Shopping>> getAllShoppingList() async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+      SELECT * FROM ${Shopping.tableName}
+    ''';
+    var args = [];
+    List<Map> result = await db.rawQuery(sql, args);
+    return Shopping.toList(result);
+  }
 
-  deleteShoppingList(int id) {}
+  Future<List<Shopping>> getDateShoppingList(String date) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+      SELECT * FROM ${Shopping.tableName} WHERE ${ShoppingField.regdate} = $date
+    ''';
+    var args = [];
+    List<Map> result = await db.rawQuery(sql, args);
+    return Shopping.toList(result);
+  }
+
+  updateShoppingList(args) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+    UPDATE
+        ${Shopping.tableName} 
+      SET
+        ${ShoppingField.title} = ? , ${ShoppingField.regdate} = ?, ${ShoppingField.isdone} = ?
+      WHERE
+        ${ShoppingField.id} = ?
+    ''';
+    await db.transaction(
+      (txn) async {
+        return await db.rawUpdate(sql, args);
+      },
+    );
+  }
+
+  deleteShoppingList(int id) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+      DELETE FROM ${Shopping.tableName} WHERE $id = ?
+    ''';
+    db.rawDelete(sql);
+  }
 }

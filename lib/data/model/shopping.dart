@@ -19,19 +19,20 @@ class Shopping {
   String regdate; // 장보기 일시
   bool isdone; // 장보기 완료여부
 
-  Map toJson() {
-    return {
-      'title': title,
-      'regdate': regdate,
-      'isdone': isdone,
-    };
+  static toList(List<Map> list) {
+    return List.generate(list.length, (index) => mapToInstance(list[index]));
   }
 
-  factory Shopping.fromJson(json) {
+  static Shopping mapToInstance(Map map) {
+    String id = map[ShoppingField.id].toString();
+    String title = map[ShoppingField.title].toString();
+    String regdate = map[ShoppingField.regdate].toString();
+    String isdone = map[ShoppingField.isdone].toString();
     return Shopping(
-      title: json['title'],
-      regdate: json['regdate'],
-      isdone: json['isdone'],
+      id: int.parse(id),
+      title: title,
+      regdate: regdate,
+      isdone: int.parse(isdone).isEven ? false : true,
     );
   }
 }

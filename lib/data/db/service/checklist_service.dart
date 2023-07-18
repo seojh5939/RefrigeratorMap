@@ -13,12 +13,12 @@ class CheckListService {
             ${CheckListField.content},
             ${CheckListField.amount},
             ${CheckListField.ischeck}
-            ) VALUES(?, ?, ?, ?, ?)
+            ) VALUES(?, ?, ?, ?)
           ''';
         await db.transaction(
           (txn) async {
-            return await txn.rawInsert(sql,
-                [data.id, data.title, data.content, data.amount, data.ischeck]);
+            return await txn.rawInsert(
+                sql, [data.title, data.content, data.amount, data.ischeck]);
           },
         );
       },
@@ -53,7 +53,7 @@ class CheckListService {
     UPDATE
         ${CheckList.tableName} 
       SET
-        ${CheckListField.content} = ? , ${CheckListField.amount} = ?, ${CheckListField.ischeck}
+        ${CheckListField.content} = ? , ${CheckListField.amount} = ?, ${CheckListField.ischeck} = ?
       WHERE
         ${CheckListField.id} = ?
     ''';
