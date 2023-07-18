@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
-import 'package:refrigerator_map/data/service/db_helper.dart';
+import 'package:refrigerator_map/data/db/db_helper.dart';
 import 'package:refrigerator_map/util/global_variable.dart';
 import 'package:refrigerator_map/view/home/home_page.dart';
 import 'package:refrigerator_map/viewModel/bottom_navi_viewmodel.dart';
