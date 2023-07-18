@@ -67,7 +67,7 @@ class CheckListService {
   deleteCheckList(int id) async {
     var db = await DBHelper.instance.database;
     String sql = '''
-      DELETE FROM ${CheckList.tableName} WHERE $id = ?
+      DELETE FROM ${CheckList.tableName} WHERE ${CheckListField.id} = $id
     ''';
     db.rawDelete(sql);
   }

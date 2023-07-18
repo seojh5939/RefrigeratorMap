@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class RefrigeratorField {
   static final String id = 'id';
   static final String name = 'name';
@@ -27,4 +29,27 @@ class Refrigerator {
   String expdate; // 유통기한
   String position; // 위치(냉장실, 냉동실, 신선칸)
   String? memo; // 메모
+
+  static List<Refrigerator> toList(List<Map> list) {
+    return List.generate(list.length, (index) => mapToInstance(list[index]));
+  }
+
+  static Refrigerator mapToInstance(Map data) {
+    String id = data[RefrigeratorField.id].toString();
+    String name = data[RefrigeratorField.name].toString();
+    String count = data[RefrigeratorField.count].toString();
+    String regdate = data[RefrigeratorField.regdate].toString();
+    String expdate = data[RefrigeratorField.expdate].toString();
+    String position = data[RefrigeratorField.position].toString();
+    String memo = data[RefrigeratorField.memo].toString();
+    return Refrigerator(
+      id: int.parse(id),
+      name: name,
+      count: int.parse(count),
+      regdate: regdate,
+      expdate: expdate,
+      position: position,
+      memo: memo,
+    );
+  }
 }

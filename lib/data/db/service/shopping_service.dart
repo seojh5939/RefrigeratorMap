@@ -56,7 +56,7 @@ class ShoppingService {
   deleteShoppingList(int id) async {
     var db = await DBHelper.instance.database;
     String sql = '''
-      DELETE FROM ${Shopping.tableName} WHERE $id = ?
+      DELETE FROM ${Shopping.tableName} WHERE ${ShoppingField.id} = $id
     ''';
     db.rawDelete(sql);
   }
