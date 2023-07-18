@@ -4,27 +4,33 @@ import 'package:refrigerator_map/data/model/shopping.dart';
 import 'package:refrigerator_map/viewModel/shopping_viewmodel.dart';
 
 class AddShoppingItem extends StatelessWidget {
-  AddShoppingItem({required this.index});
+  AddShoppingItem({
+    required this.index,
+    required this.title,
+    required this.list,
+  });
   int index; // ListView의 index
+  String title = "";
+  List<Shopping> list = [];
+
   @override
   Widget build(BuildContext context) {
-    ShoppingViewModel viewModel = context.read<ShoppingViewModel>();
-    List<Shopping> shoppingList = viewModel.shoppingList;
+    list = list.where((shopping) => shopping.title == title).toList();
     return Column(
       children: [
         CheckboxListTile(
-          title: Text(shoppingList[index].content),
+          title: Text(list.isEmpty ? "" : list[index].content),
           subtitle: Text(
-            "\u{1F4B8} ${shoppingList[index].amount}원",
+            "\u{1F4B8} ${list.isEmpty ? "" : list[index].amount}원",
             style: TextStyle(
               color: Colors.yellow[800],
               fontWeight: FontWeight.w700,
             ),
           ),
           controlAffinity: ListTileControlAffinity.leading,
-          value: shoppingList[index].isCompleted,
+          value: list.isEmpty ? false : list[index].isCompleted,
           onChanged: (value) {
-            viewModel.refreshCheckBox(index, value ?? false);
+            // viewModel.refreshCheckBox(index, value ?? false);
           },
           activeColor: Colors.green,
           checkColor: Colors.black,
