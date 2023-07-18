@@ -4,17 +4,71 @@ import 'package:refrigerator_map/data/model/checklist.dart';
 class CheckListService {
   addCheckList(CheckList data) async {
     var db = await DBHelper.instance.database;
-    db.transaction((txn) async {
-      String sql = 'INSERT INTO checklist(id, title, content, amount, ischeck)';
-    });
+    db.transaction(
+      (txn) async {
+        String sql = '''
+          INSERT INTO ${CheckList.tableName}(
+            ${CheckListField.id},
+            ${CheckListField.title},
+            ${CheckListField.content},
+            ${CheckListField.amount},
+            ${CheckListField.ischeck}
+            ) VALUES(?, ?, ?, ?, ?)
+          ''';
+        await db.transaction(
+          (txn) async {
+            return await txn.rawInsert(sql,
+                [data.id, data.title, data.content, data.amount, data.ischeck]);
+          },
+        );
+      },
+    );
   }
 
-  // 날짜별 장보기 목록조회
-  List<CheckList> getShoppingCheckList(String title) {
-    return [];
+  Future<List<CheckList>> getShoppingCheckList(String title) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+    SELECT 
+      ${CheckListField.id},
+      ${CheckListField.title},
+      ${CheckListField.content},
+      ${CheckListField.amount},
+      ${CheckListField.ischeck}
+      from ${CheckList.tableName}
+      where ${CheckListField.title} = $title
+    ''';
+    var args = [];
+    List<Map> result = await db.transaction(
+      (txn) async {
+        return await db.rawQuery(sql, args);
+      },
+    );
+
+    return CheckList.toList(result);
   }
 
-  updateCheckList(int id) {}
+  updateCheckList(List args) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+    UPDATE
+        ${CheckList.tableName} 
+      SET
+        ${CheckListField.content} = ? , ${CheckListField.amount} = ?, ${CheckListField.ischeck}
+      WHERE
+        ${CheckListField.id} = ?
+    ''';
+    await db.transaction(
+      (txn) async {
+        return await db.rawUpdate(sql, args);
+      },
+    );
+  }
 
-  deleteCheckList(int id) {}
+  deleteCheckList(int id) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+      DELETE FROM ${CheckList.tableName} WHERE $id = ?
+    ''';
+    db.rawDelete(sql);
+  }
 }
