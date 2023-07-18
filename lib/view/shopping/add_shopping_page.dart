@@ -93,6 +93,7 @@ class _AddShoppingPageState extends State<AddShoppingPage> {
                         amount: int.parse(amountController.text),
                       ),
                     );
+                    viewModel.notifyListeners();
                   },
                   child: Text(
                     "등록",

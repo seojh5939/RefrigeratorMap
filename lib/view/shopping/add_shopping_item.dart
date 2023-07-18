@@ -19,16 +19,16 @@ class AddShoppingItem extends StatelessWidget {
     return Column(
       children: [
         CheckboxListTile(
-          title: Text(list[index].content),
+          title: Text(list.isEmpty ? "" : list[index].content),
           subtitle: Text(
-            "\u{1F4B8} ${list[index].amount}원",
+            "\u{1F4B8} ${list.isEmpty ? "" : list[index].amount}원",
             style: TextStyle(
               color: Colors.yellow[800],
               fontWeight: FontWeight.w700,
             ),
           ),
           controlAffinity: ListTileControlAffinity.leading,
-          value: list[index].isCompleted,
+          value: list.isEmpty ? false : list[index].isCompleted,
           onChanged: (value) {
             // viewModel.refreshCheckBox(index, value ?? false);
           },
