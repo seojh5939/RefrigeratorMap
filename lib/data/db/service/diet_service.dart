@@ -1,14 +1,54 @@
+import 'package:refrigerator_map/data/db/db_helper.dart';
 import 'package:refrigerator_map/data/model/diet.dart';
 
 class DietService {
-  addDietList(Diet data) {}
-
-  // 전체 조회
-  List<Diet> getAllDietList() {
-    return [];
+  addDietList(Diet data) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+      INSERT INTO ${Diet.tableName}(
+            ${DietField.id},
+            ${DietField.name},
+            ${DietField.date},
+            ${DietField.mealtime},
+            ${DietField.memo}
+            ) VALUES(?, ?, ?, ?)
+    ''';
+    await db.rawInsert(sql, [data.name, data.date, data.mealtime, data.memo]);
   }
 
-  updateDietList(int id) {}
+  // 전체 조회
+  Future<List<Diet>> getAllDietList() async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+      SELECT * FROM ${Diet.tableName}
+    ''';
+    var args = [];
+    List<Map> result = await db.rawQuery(sql, args);
+    return Diet.toList(result);
+  }
 
-  deleteDietList(int id) {}
+  updateDietList(args) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+    UPDATE
+        ${Diet.tableName} 
+      SET
+        ${DietField.name} = ? , ${DietField.date} = ?, ${DietField.mealtime} = ?, ${DietField.memo} = ?
+      WHERE
+        ${DietField.id} = ?
+    ''';
+    await db.transaction(
+      (txn) async {
+        return await db.rawUpdate(sql, args);
+      },
+    );
+  }
+
+  deleteDietList(int id) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+      DELETE FROM ${Diet.tableName} WHERE $id = ?
+    ''';
+    db.rawDelete(sql);
+  }
 }

@@ -21,4 +21,23 @@ class Diet {
   String date; // 날짜
   String mealtime; // 언제먹을지(아침,점심,저녁,간식)
   String memo; // 메모
+
+  static toList(List<Map> list) {
+    return List.generate(list.length, (index) => list[index]);
+  }
+
+  static Diet mapToInstance(Map data) {
+    String id = data[DietField.id];
+    String name = data[DietField.name];
+    String date = data[DietField.date];
+    String mealtime = data[DietField.mealtime];
+    String memo = data[DietField.memo];
+    return Diet(
+      id: int.parse(id),
+      name: name,
+      date: date,
+      mealtime: mealtime,
+      memo: memo,
+    );
+  }
 }
