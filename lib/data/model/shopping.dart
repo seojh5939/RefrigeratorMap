@@ -1,38 +1,38 @@
+class ShoppingField {
+  static final String id = 'id';
+  static final String title = 'title';
+  static final String regdate = 'regdate';
+  static final String isdone = 'isdone';
+}
+
 /// 장보기 목록 모델클레스
 class Shopping {
   Shopping({
+    this.id,
     required this.title,
-    required this.dttm,
-    this.isCompleted = false,
-    this.isDone = false,
-    required this.content,
-    this.amount = 0,
+    required this.regdate,
+    this.isdone = false,
   });
+  static String tableName = "shopping";
+  int? id;
   String title; // 장보기 목록 제목
-  String dttm; // 장보기 일시
-  bool isCompleted; // 체크박스 체크여부
-  bool isDone; // 장보기 완료여부
-  String content; // 장보기 목록에 들어가는 내용
-  int amount; // 사용한 금액
+  String regdate; // 장보기 일시
+  bool isdone; // 장보기 완료여부
 
-  Map toJson() {
-    return {
-      'title': title,
-      'dttm': dttm,
-      'isCompleted': isCompleted,
-      'isDone': isDone,
-      'content': content,
-      'amount': amount,
-    };
+  static toList(List<Map> list) {
+    return List.generate(list.length, (index) => mapToInstance(list[index]));
   }
 
-  factory Shopping.fromJson(json) {
+  static Shopping mapToInstance(Map map) {
+    String id = map[ShoppingField.id].toString();
+    String title = map[ShoppingField.title].toString();
+    String regdate = map[ShoppingField.regdate].toString();
+    String isdone = map[ShoppingField.isdone].toString();
     return Shopping(
-        title: json['title'],
-        dttm: json['dttm'],
-        isCompleted: json['isCompleted'],
-        isDone: json['isDone'],
-        content: json['content'],
-        amount: json['amount']);
+      id: int.parse(id),
+      title: title,
+      regdate: regdate,
+      isdone: int.parse(isdone).isEven ? false : true,
+    );
   }
 }

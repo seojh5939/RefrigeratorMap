@@ -1,17 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:refrigerator_map/data/db/service/checklist_service.dart';
+import 'package:refrigerator_map/data/db/service/shopping_service.dart';
+import 'package:refrigerator_map/data/model/checklist.dart';
 import 'package:refrigerator_map/data/model/shopping.dart';
 import 'package:refrigerator_map/main.dart';
-import 'package:refrigerator_map/util/preference_keys.dart';
 
 /// 장보기 ViewModel
 class ShoppingViewModel extends ChangeNotifier {
-  ShoppingViewModel() {
-    load();
-  }
+  final _shoppingService = ShoppingService();
+  final _checkListService = CheckListService();
 
-  List<Shopping> shoppingList = [];
   DateTime focusedDay = DateTime.now();
   DateTime? selectedDay;
 
@@ -25,48 +25,52 @@ class ShoppingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  deepCopyShoppingList(List<Shopping> data) {
-    shoppingList.addAll(data);
-    save();
-    notifyListeners();
+  Future<List<Shopping>> getAllShoppingList() async {
+    return await _shoppingService.getAllShoppingList();
+  }
+
+  Future<List<Shopping>> getShoppingList(String date) async {
+    return await _shoppingService.getDateShoppingList(date);
   }
 
   addShopingList(Shopping data) {
-    shoppingList.add(data);
-    save();
+    _shoppingService.addShoppingList(data);
     notifyListeners();
   }
 
-  removeShoppingList(int index) {
-    shoppingList.removeAt(index);
-    save();
+  addCheckList(CheckList data) {
+    _checkListService.addCheckList(data);
     notifyListeners();
   }
 
-  updateShoppingList(int index, Shopping data) {
-    shoppingList[index] = data;
-    save();
+  updateShoppingList(Shopping data) {
+    _shoppingService
+        .updateShoppingList([data.title, data.regdate, data.isdone, data.id]);
     notifyListeners();
   }
 
-  refreshCheckBox(int index, bool changeValue) {
-    shoppingList[index].isCompleted = changeValue;
-    save();
+  removeShoppingList(int id) {
+    _shoppingService.deleteShoppingList(id);
     notifyListeners();
   }
 
-  // {'key' : List<Shopping>, 'key2' : List<Shopping>}
-
-  save() {
-    List list = shoppingList.map((shopping) => shopping.toJson()).toList();
-    String jsonString = jsonEncode(list);
-    prefs.setString(PreferenceKeys.shoppingList, jsonString);
+  Future<List<CheckList>> getAllCheckList(String title) async {
+    return await _checkListService.getShoppingCheckListByTitle(title);
   }
 
-  load() {
-    String? jsonString = prefs.getString(PreferenceKeys.shoppingList);
-    if (jsonString == null) return;
-    List list = jsonDecode(jsonString);
-    shoppingList = list.map((json) => Shopping.fromJson(json)).toList();
+  refreshCheckBox({required bool? changeValue, required int id}) async {
+    await _checkListService.updateCheckState(changeValue == true ? 1 : 0, id);
+    notifyListeners();
+  }
+
+  Future<int> getTotalAmount(String title) async {
+    List<CheckList> list =
+        await _checkListService.getShoppingCheckListByTitle(title);
+    int total = 0;
+    if (list.isEmpty) return total;
+    for (int i = 0; i < list.length; i++) {
+      total += list[i].amount;
+    }
+    return total;
   }
 }

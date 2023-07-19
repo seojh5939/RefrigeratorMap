@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:refrigerator_map/style/color.dart';
 
 class CustomFloatingActionButton extends StatelessWidget {
-  CustomFloatingActionButton({
-    required this.title,
-    required this.onTab,
-  });
-  String title;
+  CustomFloatingActionButton({required this.onTab});
   void Function() onTab;
 
   @override
