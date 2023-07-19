@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:refrigerator_map/util/global_variable.dart';
+import 'package:refrigerator_map/viewModel/diet_viewmodel.dart';
 import 'package:refrigerator_map/viewModel/shopping_viewmodel.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -12,12 +13,15 @@ class CustomCalendar extends StatelessWidget {
     viewModel = widgetName == "ShoppingPage"
         ? GlobalAccessContext.navigatorState.currentContext!
             .read<ShoppingViewModel>()
-        : "";
+        : GlobalAccessContext.navigatorState.currentContext!
+            .read<DietViewModel>();
     focusedDay = widgetName == "ShoppingPage"
         ? GlobalAccessContext.navigatorState.currentContext!
             .watch<ShoppingViewModel>()
             .focusedDay
-        : "";
+        : GlobalAccessContext.navigatorState.currentContext!
+            .watch<DietViewModel>()
+            .focusedDay;
   }
 
   String widgetName;

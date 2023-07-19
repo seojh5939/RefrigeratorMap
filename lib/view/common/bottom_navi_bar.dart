@@ -42,7 +42,7 @@ class BottomNaviBar extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "홈"),
         BottomNavigationBarItem(
             icon: Icon(Icons.local_grocery_store), label: "장보기"),
-        BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: "식재료"),
+        BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: "식단표"),
       ],
     );
   }
