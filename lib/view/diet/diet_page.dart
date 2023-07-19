@@ -66,7 +66,7 @@ class DietPage extends StatelessWidget {
     return Container(
       color: Colors.grey[300],
       child: Padding(
-        padding: const EdgeInsets.all(4.0),
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
             Container(
@@ -79,7 +79,10 @@ class DietPage extends StatelessWidget {
             ),
             Spacer(),
             // TODO 식사메뉴 String 받아서 적용.
-            Text("삼겹살 구이", style: TextStyle(fontSize: 25)),
+            Text(
+              "삼겹살 구이",
+              style: TextStyle(fontSize: 20),
+            ),
             Spacer(),
             IconButton(
               icon: Icon(Icons.search),
