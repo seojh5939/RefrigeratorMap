@@ -23,7 +23,7 @@ class DietService {
       SELECT * FROM ${Diet.tableName}
     ''';
     var args = [];
-    List<Map> result = await db.rawQuery(sql, args);
+    List<Map>? result = await db.rawQuery(sql, args);
     return Diet.toList(result);
   }
 
@@ -37,11 +37,7 @@ class DietService {
       WHERE
         ${DietField.id} = ?
     ''';
-    await db.transaction(
-      (txn) async {
-        return await db.rawUpdate(sql, args);
-      },
-    );
+    await db.rawUpdate(sql, args);
   }
 
   deleteDietList(int id) async {
@@ -49,6 +45,6 @@ class DietService {
     String sql = '''
       DELETE FROM ${Diet.tableName} WHERE ${DietField.id} = $id
     ''';
-    db.rawDelete(sql);
+    await db.rawDelete(sql);
   }
 }

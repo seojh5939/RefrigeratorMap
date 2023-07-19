@@ -32,7 +32,7 @@ class RefrigeratorService {
       SELECT * FROM ${Refrigerator.tableName}
     ''';
     var args = [];
-    List<Map> result = await db.rawQuery(sql, args);
+    List<Map>? result = await db.rawQuery(sql, args);
     return Refrigerator.toList(result);
   }
 
@@ -43,7 +43,7 @@ class RefrigeratorService {
       SELECT * FROM ${Refrigerator.tableName} WHERE ${RefrigeratorField.id} = $id
     ''';
     var args = [];
-    List<Map> resultQuery = await db.rawQuery(sql, args);
+    List<Map>? resultQuery = await db.rawQuery(sql, args);
 
     return Refrigerator.toList(resultQuery).firstOrNull;
   }
@@ -63,11 +63,9 @@ class RefrigeratorService {
       WHERE
         ${RefrigeratorField.id} = ?
     ''';
-    await db.transaction(
-      (txn) async {
-        return await db.rawUpdate(sql, args);
-      },
-    );
+    await db.transaction((txn) async {
+      return await txn.rawUpdate(sql, args);
+    });
   }
 
   deleteRefrigeratorList(int id) async {
@@ -75,6 +73,6 @@ class RefrigeratorService {
     String sql = '''
       DELETE FROM ${Refrigerator.tableName} WHERE ${RefrigeratorField.id} = $id
     ''';
-    db.rawDelete(sql);
+    await db.rawDelete(sql);
   }
 }

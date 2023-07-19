@@ -1,5 +1,3 @@
-import 'dart:math';
-
 class RefrigeratorField {
   static final String id = 'id';
   static final String name = 'name';

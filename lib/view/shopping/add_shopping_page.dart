@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:refrigerator_map/data/model/checklist.dart';
 import 'package:refrigerator_map/data/model/shopping.dart';
 import 'package:refrigerator_map/view/shopping/add_shopping_item.dart';
 import 'package:refrigerator_map/viewModel/shopping_viewmodel.dart';
@@ -21,7 +22,6 @@ class _AddShoppingPageState extends State<AddShoppingPage> {
   @override
   Widget build(BuildContext context) {
     ShoppingViewModel viewModel = context.read<ShoppingViewModel>();
-    tempList = [...viewModel.shoppingList];
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -80,20 +80,41 @@ class _AddShoppingPageState extends State<AddShoppingPage> {
                     ),
                   ),
                 ),
+                ListTile(
+                  title: Text(
+                    "등록일",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  subtitle: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: TextFormField(
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.orange),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.orange),
                       elevation: MaterialStateProperty.all(3)),
                   onPressed: () {
-                    tempList.add(
-                      Shopping(
-                        title: widget.title,
-                        dttm: "dttm",
-                        content: contentController.text,
-                        amount: int.parse(amountController.text),
-                      ),
+                    viewModel.addCheckList(
+                      CheckList(
+                          title: widget.title,
+                          content: contentController.text,
+                          amount: int.parse(amountController.text),
+                          ischeck: false),
                     );
-                    viewModel.notifyListeners();
                   },
                   child: Text(
                     "등록",
@@ -105,15 +126,36 @@ class _AddShoppingPageState extends State<AddShoppingPage> {
               ],
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: viewModel.shoppingList.length,
-                itemBuilder: (context, index) {
-                  return AddShoppingItem(
-                    index: index,
-                    title: widget.title,
-                    list: tempList,
-                  );
-                },
+              child: Center(
+                child: FutureBuilder(
+                  future: _futureCheckList(viewModel, widget.title),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData == false) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "Error : ${snapshot.error}",
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      );
+                    } else {
+                      List<CheckList> data = snapshot.data;
+                      return data.isEmpty
+                          ? Container()
+                          : ListView.builder(
+                              itemCount: data.length,
+                              itemBuilder: (context, index) {
+                                return AddShoppingItem(
+                                  index: index,
+                                  list: data,
+                                );
+                              },
+                            );
+                    }
+                  },
+                ),
               ),
             ),
             Row(
@@ -124,26 +166,10 @@ class _AddShoppingPageState extends State<AddShoppingPage> {
                       backgroundColor: MaterialStateProperty.all(Colors.orange),
                       elevation: MaterialStateProperty.all(3)),
                   onPressed: () {
-                    viewModel.deepCopyShoppingList(tempList);
                     Navigator.pop(context);
                   },
                   child: Text(
-                    "저장",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.orange),
-                      elevation: MaterialStateProperty.all(3)),
-                  onPressed: () {},
-                  child: Text(
-                    "취소",
+                    "확인",
                     style: TextStyle(
                       color: Colors.white,
                     ),
@@ -156,4 +182,8 @@ class _AddShoppingPageState extends State<AddShoppingPage> {
       ),
     );
   }
+
+  Future<List<CheckList>> _futureCheckList(
+          ShoppingViewModel viewModel, String title) async =>
+      await viewModel.getAllCheckList(title);
 }

@@ -20,16 +20,14 @@ class HomePage extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      floatingActionButton: CustomFloatingActionButton(
-          title: "식재료 추가",
-          onTab: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => AddRefrigeratorPage(),
-              ),
-            );
-          }),
+      floatingActionButton: CustomFloatingActionButton(onTab: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => AddRefrigeratorPage(),
+          ),
+        );
+      }),
       bottomNavigationBar: BottomNaviBar(),
     );
   }

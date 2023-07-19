@@ -17,15 +17,21 @@ class DBHelper {
   static Database? _database;
 
   Future<Database> get database async {
-    if (_database != null) return _database as Database;
+    if (_database != null) {
+      return _database as Database;
+    }
     _database = await initDB();
     return _database as Database;
   }
 
-  initDB() async {
+  Future<Database> initDB() async {
     var databasePath = await getDatabasesPath();
     String path = join(databasePath, 'dev.db');
-    _database = await openDatabase(
+
+    // DB 삭제(테스트용)
+    await deleteDatabase(path);
+
+    return await openDatabase(
       path,
       version: 1,
       onCreate: _onCreate,

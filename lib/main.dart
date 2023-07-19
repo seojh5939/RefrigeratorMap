@@ -6,12 +6,9 @@ import 'package:refrigerator_map/util/global_variable.dart';
 import 'package:refrigerator_map/view/home/home_page.dart';
 import 'package:refrigerator_map/viewModel/bottom_navi_viewmodel.dart';
 import 'package:refrigerator_map/viewModel/shopping_viewmodel.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-late SharedPreferences prefs;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  prefs = await SharedPreferences.getInstance();
   initializeDateFormatting().then(
     (_) => runApp(
       MultiProvider(

@@ -11,7 +11,9 @@ class MuckitListService {
             ${MuckitListField.date},
             ) VALUES(?, ?)
     ''';
-    await db.rawInsert(sql, [data.name, data.date]);
+    await db.transaction((txn) async {
+      return await txn.rawInsert(sql, [data.name, data.date]);
+    });
   }
 
   // 전체 조회
@@ -21,7 +23,7 @@ class MuckitListService {
       SELECT * FROM ${MuckitList.tableName}
     ''';
     var args = [];
-    List<Map> result = await db.rawQuery(sql, args);
+    List<Map>? result = await db.rawQuery(sql, args);
     return MuckitList.toList(result);
   }
 
@@ -35,11 +37,7 @@ class MuckitListService {
       WHERE
         ${MuckitListField.id} = ?
     ''';
-    await db.transaction(
-      (txn) async {
-        return await db.rawUpdate(sql, args);
-      },
-    );
+    await db.rawUpdate(sql, args);
   }
 
   deleteDietList(int id) async {
@@ -47,6 +45,6 @@ class MuckitListService {
     String sql = '''
       DELETE FROM ${MuckitList.tableName} WHERE ${MuckitListField.id} = $id
     ''';
-    db.rawDelete(sql);
+    await db.rawDelete(sql);
   }
 }

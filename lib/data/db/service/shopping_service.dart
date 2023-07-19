@@ -6,13 +6,13 @@ class ShoppingService {
     var db = await DBHelper.instance.database;
     String sql = '''
       INSERT INTO ${Shopping.tableName}(
-            ${ShoppingField.id},
             ${ShoppingField.title},
             ${ShoppingField.regdate},
-            ${ShoppingField.isdone},
+            ${ShoppingField.isdone}
             ) VALUES(?, ?, ?)
     ''';
-    await db.rawInsert(sql, [data.title, data.regdate, data.isdone]);
+    await db.rawInsert(
+        sql, [data.title, data.regdate, data.isdone == false ? 0 : 1]);
   }
 
   // 전체 조회
@@ -22,7 +22,7 @@ class ShoppingService {
       SELECT * FROM ${Shopping.tableName}
     ''';
     var args = [];
-    List<Map> result = await db.rawQuery(sql, args);
+    List<Map>? result = await db.rawQuery(sql, args);
     return Shopping.toList(result);
   }
 
@@ -32,7 +32,7 @@ class ShoppingService {
       SELECT * FROM ${Shopping.tableName} WHERE ${ShoppingField.regdate} = $date
     ''';
     var args = [];
-    List<Map> result = await db.rawQuery(sql, args);
+    List<Map>? result = await db.rawQuery(sql, args);
     return Shopping.toList(result);
   }
 
@@ -46,11 +46,9 @@ class ShoppingService {
       WHERE
         ${ShoppingField.id} = ?
     ''';
-    await db.transaction(
-      (txn) async {
-        return await db.rawUpdate(sql, args);
-      },
-    );
+    await db.transaction((txn) async {
+      return await txn.rawUpdate(sql, args);
+    });
   }
 
   deleteShoppingList(int id) async {
@@ -58,6 +56,6 @@ class ShoppingService {
     String sql = '''
       DELETE FROM ${Shopping.tableName} WHERE ${ShoppingField.id} = $id
     ''';
-    db.rawDelete(sql);
+    await db.rawDelete(sql);
   }
 }
