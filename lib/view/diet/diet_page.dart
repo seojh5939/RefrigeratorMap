@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:refrigerator_map/data/model/diet.dart';
 import 'package:refrigerator_map/view/common/bottom_navi_bar.dart';
 import 'package:refrigerator_map/view/common/calendar.dart';
 import 'package:refrigerator_map/view/common/floating_action_button.dart';
-import 'package:refrigerator_map/view/diet/recipe_page.dart';
+import 'package:refrigerator_map/view/diet/add_diet_page.dart';
 import 'package:refrigerator_map/viewModel/diet_viewmodel.dart';
-import 'dart:developer' as developer;
 
 /// 식단표 페이지
 class DietPage extends StatelessWidget {
@@ -54,7 +52,8 @@ class DietPage extends StatelessWidget {
         onTab: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => RecipePage()),
+            MaterialPageRoute(
+                builder: (_) => AddDietPage(mealTimeList: mealTimeList)),
           );
         },
       ),
