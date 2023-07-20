@@ -41,37 +41,46 @@ class AddRefrigeratorPage extends StatelessWidget {
                   validator: (value) {},
                   maxLength: 150,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.orangeAccent)),
-                      onPressed: () {},
-                      child: Text(
-                        "저장",
-                        style: TextStyle(fontSize: 15, color: Colors.white),
-                      ),
-                    ),
-                    SizedBox(width: 25, height: 100),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.orangeAccent)),
-                      onPressed: () {},
-                      child: Text(
-                        "취소",
-                        style: TextStyle(fontSize: 15, color: Colors.white),
-                      ),
-                    )
-                  ],
-                ),
+                RenderElevatedButton(),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class RenderElevatedButton extends StatelessWidget {
+  const RenderElevatedButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),
+          onPressed: () {},
+          child: Text(
+            "저장",
+            style: TextStyle(fontSize: 15, color: Colors.white),
+          ),
+        ),
+        SizedBox(width: 25, height: 100),
+        ElevatedButton(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),
+          onPressed: () {},
+          child: Text(
+            "취소",
+            style: TextStyle(fontSize: 15, color: Colors.white),
+          ),
+        )
+      ],
     );
   }
 }
