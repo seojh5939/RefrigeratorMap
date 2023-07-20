@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:refrigerator_map/data/model/shopping.dart';
 import 'package:refrigerator_map/style/color.dart';
@@ -11,16 +12,11 @@ import 'package:refrigerator_map/view/shopping/shopping_item.dart';
 import 'package:refrigerator_map/viewModel/shopping_viewmodel.dart';
 
 /// 장보기 페이지
-class ShoppingPage extends StatefulWidget {
+class ShoppingPage extends StatelessWidget {
   ShoppingPage({super.key});
 
-  @override
-  State<ShoppingPage> createState() => _ShoppingPageState();
-}
-
-class _ShoppingPageState extends State<ShoppingPage> {
-  final List<bool> _isSelected = [true, false];
   final _formKey = GlobalKey<FormState>();
+
   final titleController = TextEditingController();
 
   @override
@@ -31,46 +27,8 @@ class _ShoppingPageState extends State<ShoppingPage> {
           child: Column(
             children: [
               CustomCalendar(widgetName: context.widget.toString()),
-              ToggleButtons(
-                onPressed: (index) {
-                  setState(
-                    () {
-                      for (int i = 0; i < _isSelected.length; i++) {
-                        _isSelected[i] = i == index;
-                      }
-                    },
-                  );
-                },
-                fillColor: Colors.black,
-                isSelected: _isSelected,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "장보기 목록",
-                      style: TextStyle(
-                        fontSize: 17,
-                        color: _isSelected[0] == true
-                            ? ColorList.white
-                            : ColorList.black,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "장보기 완료",
-                      style: TextStyle(
-                        fontSize: 17,
-                        color: _isSelected[1] == true
-                            ? ColorList.white
-                            : ColorList.black,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              ShoppingItem(isSelected: _isSelected),
+              RenderToggleButtons(),
+              ShoppingItem(),
             ],
           ),
         ),
@@ -88,7 +46,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
   Future<void> showAlartDialog() async {
     return showDialog(
       barrierDismissible: false,
-      context: context,
+      context: GlobalAccessContext.navigatorState.currentContext!,
       builder: (BuildContext context) => AlertDialog(
         title: Text("타이틀 입력"),
         content: ListTile(
@@ -121,10 +79,18 @@ class _ShoppingPageState extends State<ShoppingPage> {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                createShoppingListItem(
+                // ViewModel Init
+                var viewModel = GlobalAccessContext
+                    .navigatorState.currentContext!
+                    .read<ShoppingViewModel>();
+                // Insert DB
+                viewModel.addShopingList(
+                  Shopping(
                     title: titleController.text,
-                    regdate: DateTime.now().toIso8601String(),
-                    isdone: false);
+                    regdate: DateFormat.yMd().format(DateTime.now()).toString(),
+                    isdone: false,
+                  ),
+                );
                 Navigator.pop(context);
                 Navigator.push(
                   context,
@@ -147,15 +113,53 @@ class _ShoppingPageState extends State<ShoppingPage> {
       ),
     );
   }
+}
 
-  createShoppingListItem({
-    required String title,
-    required String regdate,
-    required bool isdone,
-  }) {
-    var viewModel = GlobalAccessContext.navigatorState.currentContext!
-        .read<ShoppingViewModel>();
-    viewModel.addShopingList(
-        Shopping(title: title, regdate: regdate, isdone: isdone));
+class RenderToggleButtons extends StatefulWidget {
+  const RenderToggleButtons({super.key});
+
+  @override
+  State<RenderToggleButtons> createState() => _RenderToggleButtonsState();
+}
+
+class _RenderToggleButtonsState extends State<RenderToggleButtons> {
+  final List<bool> _isSelected = [true, false];
+  @override
+  Widget build(BuildContext context) {
+    return ToggleButtons(
+      onPressed: (index) {
+        setState(
+          () {
+            for (int i = 0; i < _isSelected.length; i++) {
+              _isSelected[i] = i == index;
+            }
+          },
+        );
+      },
+      fillColor: Colors.black,
+      isSelected: _isSelected,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "장보기 목록",
+            style: TextStyle(
+              fontSize: 17,
+              color: _isSelected[0] == true ? ColorList.white : ColorList.black,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "장보기 완료",
+            style: TextStyle(
+              fontSize: 17,
+              color: _isSelected[1] == true ? ColorList.white : ColorList.black,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
