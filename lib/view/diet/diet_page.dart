@@ -20,29 +20,10 @@ class DietPage extends StatelessWidget {
             CustomCalendar(widgetName: context.widget.toString()),
             SizedBox(height: 15),
             // 1주일 달력
-            Container(
-              color: Colors.grey[300],
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: dayButton(context: context),
-              ),
-            ),
+            RenderweklyCalendar(),
             SizedBox(height: 15),
             // 식단표
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: MediaQuery.of(context).size.height * 0.3,
-              child: ListView.separated(
-                  itemCount: mealTimeList.length,
-                  separatorBuilder: (context, index) {
-                    return SizedBox(
-                      height: 8,
-                    );
-                  },
-                  itemBuilder: (context, index) {
-                    return mealCard(context, mealTimeList[index]);
-                  }),
-            ),
+            RenderDietListView(mealTimeList: mealTimeList),
           ],
         ),
       ),
@@ -59,9 +40,73 @@ class DietPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  // 시간별 식단표카드(아침, 점심, 저녁, 간식)
-  Container mealCard(BuildContext context, String mealTime) {
+/// 주간달력표
+class RenderweklyCalendar extends StatelessWidget {
+  const RenderweklyCalendar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.grey[300],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: dayButton(context: context),
+      ),
+    );
+  }
+
+  List<Widget> dayButton({required BuildContext context}) {
+    List<Widget> list = [];
+    List<String> dayList = ["일", "월", "화", "수", "목", "금", "토"];
+    for (int i = 0; i < 7; i++) {
+      list.add(
+        RenderUserSelectedDay(index: i, dayList: dayList),
+      );
+    }
+    return list;
+  }
+}
+
+/// 식단표 ListView
+class RenderDietListView extends StatelessWidget {
+  const RenderDietListView({
+    super.key,
+    required this.mealTimeList,
+  });
+
+  final List<String> mealTimeList;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.height * 0.3,
+      child: ListView.separated(
+          itemCount: mealTimeList.length,
+          separatorBuilder: (context, index) {
+            return SizedBox(
+              height: 8,
+            );
+          },
+          itemBuilder: (context, index) {
+            return RenderMealCard(mealTime: mealTimeList[index]);
+          }),
+    );
+  }
+}
+
+/// 시간별 식단표카드(아침, 점심, 저녁, 간식)
+class RenderMealCard extends StatelessWidget {
+  final String mealTime;
+  const RenderMealCard({
+    super.key,
+    required this.mealTime,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       color: Colors.grey[300],
       child: Padding(
@@ -92,46 +137,69 @@ class DietPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  List<Widget> dayButton({required BuildContext context}) {
-    List<Widget> list = [];
-    List<String> dayList = ["일", "월", "화", "수", "목", "금", "토"];
-    for (int i = 0; i < 7; i++) {
-      list.add(
-        Padding(
-          padding: const EdgeInsets.all(1.4),
-          child: InkWell(
-            onTap: () {
-              context.read<DietViewModel>().viewSelectedDay(i);
-            },
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                context.watch<DietViewModel>().isSelectedList[i] == true
-                    ? printDayTextWithSelectedCircle(context, dayList[i])
-                    : printDayText(context, dayList[i]),
-              ],
-            ),
-          ),
+class RenderUserSelectedDay extends StatelessWidget {
+  const RenderUserSelectedDay({
+    super.key,
+    required this.index,
+    required this.dayList,
+  });
+
+  final int index;
+  final List<String> dayList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(1.4),
+      child: InkWell(
+        onTap: () {
+          context.read<DietViewModel>().viewSelectedDay(index);
+        },
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            context.watch<DietViewModel>().isSelectedList[index] == true
+                ? RenderDayTextWithSelectedCircle(day: dayList[index])
+                : RenderDayText(day: dayList[index]),
+          ],
         ),
-      );
-    }
-    return list;
+      ),
+    );
   }
+}
 
-  // 클릭시 해당 요일 선택표시
-  Container printDayTextWithSelectedCircle(BuildContext context, String day) {
+/// 클릭시 해당 요일 선택표시
+class RenderDayTextWithSelectedCircle extends StatelessWidget {
+  final String day;
+  const RenderDayTextWithSelectedCircle({
+    super.key,
+    required this.day,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.125,
       height: MediaQuery.of(context).size.height * 0.06,
       decoration:
           BoxDecoration(shape: BoxShape.circle, color: Colors.orangeAccent),
-      child: printDayText(context, day),
+      child: RenderDayText(day: day),
     );
   }
+}
 
-  // 요일만 표시
-  SizedBox printDayText(BuildContext context, String day) {
+/// 요일만 표시
+class RenderDayText extends StatelessWidget {
+  final String day;
+  const RenderDayText({
+    super.key,
+    required this.day,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.125,
       height: MediaQuery.of(context).size.height * 0.06,
