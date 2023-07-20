@@ -110,10 +110,11 @@ class _AddShoppingPageState extends State<AddShoppingPage> {
                   onPressed: () {
                     viewModel.addCheckList(
                       CheckList(
-                          title: widget.title,
-                          content: contentController.text,
-                          amount: int.parse(amountController.text),
-                          ischeck: false),
+                        title: widget.title,
+                        content: contentController.text,
+                        amount: int.parse(amountController.text),
+                        ischeck: false,
+                      ),
                     );
                   },
                   child: Text(

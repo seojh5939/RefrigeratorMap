@@ -14,6 +14,9 @@ class ShoppingViewModel extends ChangeNotifier {
 
   DateTime focusedDay = DateTime.now();
   DateTime? selectedDay;
+  List<bool> isSelectedToggleBtn = [true, false];
+
+  changeSelectedToggle(bool changeValue) {}
 
   bool isSameDay(DateTime day) {
     return selectedDay == day;
