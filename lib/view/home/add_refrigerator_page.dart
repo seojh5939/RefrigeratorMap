@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:refrigerator_map/data/model/refrigerator.dart';
+import 'package:refrigerator_map/viewModel/main_viewmodel.dart';
 
 /// 냉장고 식재료 추가 페이지
 class AddRefrigeratorPage extends StatelessWidget {
-  const AddRefrigeratorPage({super.key});
+  AddRefrigeratorPage({super.key});
+  var nameController = TextEditingController();
+  int _count = 1; // 수량
+  var regDateController = TextEditingController();
+  var expDateController = TextEditingController();
+  var memoController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -11,38 +21,136 @@ class AddRefrigeratorPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Text("냉장고에 어떤 식재료를 추가하시겠어요?",
-                    style:
-                        TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-                SizedBox(height: 25.0),
-                RenderTextFormField(
-                  label: '식재료명',
-                  onSaved: (newValue) {},
-                  validator: (value) {},
-                ),
-                RenderCountWidget(label: '수량'),
-                RenderTextFormField(
-                    label: '등록일',
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Text("냉장고에 어떤 식재료를 추가하시겠어요?",
+                      style:
+                          TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 25.0),
+                  Row(
+                    children: [
+                      Text("식재료명",
+                          style: TextStyle(
+                              fontSize: 15.0, fontWeight: FontWeight.w700)),
+                    ],
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    controller: nameController,
+                    onSaved: (newValue) {
+                      nameController.text = newValue ?? "";
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '식재료명은 반드시 입력해야합니다.';
+                      }
+                      // TODO db 중복검사
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20.0),
+                  RenderCountWidget(
+                    label: '수량',
+                    count: _count,
+                  ),
+                  Row(
+                    children: [
+                      Text("등록일",
+                          style: TextStyle(
+                              fontSize: 15.0, fontWeight: FontWeight.w700)),
+                    ],
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    controller: regDateController,
+                    onSaved: (newValue) {},
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '구입하신 일자를 등록해주세요!';
+                      }
+                      return null;
+                    },
+                    onTap: () async {
+                      var selected = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now());
+                      if (selected != null) {
+                        var selectedDate =
+                            (DateFormat.yMMMd()).format(selected);
+                        regDateController.text = selectedDate.toString();
+                      }
+                    },
+                    readOnly: true,
+                  ),
+                  SizedBox(height: 20.0),
+                  Row(
+                    children: [
+                      Text("유통기한",
+                          style: TextStyle(
+                              fontSize: 15.0, fontWeight: FontWeight.w700)),
+                    ],
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    controller: expDateController,
+                    onSaved: (newValue) {},
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'D-Day계산을위해 유통기한 입력을 해주셔야합니다.';
+                      }
+                      return null;
+                    },
+                    onTap: () async {
+                      var selected = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now());
+                      if (selected != null) {
+                        var selectedDate =
+                            (DateFormat.yMMMd()).format(selected);
+                        expDateController.text = selectedDate.toString();
+                      }
+                    },
+                    readOnly: true,
+                  ),
+                  SizedBox(height: 20.0),
+                  RenderDropDownButton(
+                    label: '위치',
+                  ),
+                  Row(
+                    children: [
+                      Text("메모",
+                          style: TextStyle(
+                              fontSize: 15.0, fontWeight: FontWeight.w700)),
+                    ],
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    controller: memoController,
+                    maxLength: 150,
                     onSaved: (newValue) {},
                     validator: (value) {},
-                    readOnly: true),
-                RenderTextFormField(
-                  label: '유통기한',
-                  onSaved: (newValue) {},
-                  validator: (value) {},
-                  readOnly: true,
-                ),
-                RenderDropDownButton(label: '위치'),
-                RenderTextFormField(
-                  label: "메모",
-                  onSaved: (newValue) {},
-                  validator: (value) {},
-                  maxLength: 150,
-                ),
-                RenderElevatedButton(),
-              ],
+                  ),
+                  SizedBox(height: 20.0),
+                  RenderElevatedButton(
+                    formKey: _formKey,
+                    nameController: nameController,
+                    regDateController: regDateController,
+                    expDateController: expDateController,
+                    memoController: memoController,
+                    count: _count,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -52,8 +160,20 @@ class AddRefrigeratorPage extends StatelessWidget {
 }
 
 class RenderElevatedButton extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
+  final nameController;
+  final int count;
+  final regDateController;
+  final expDateController;
+  final memoController;
   const RenderElevatedButton({
     super.key,
+    required this.formKey,
+    required this.nameController,
+    required this.count,
+    required this.regDateController,
+    required this.expDateController,
+    required this.memoController,
   });
 
   @override
@@ -64,7 +184,22 @@ class RenderElevatedButton extends StatelessWidget {
         ElevatedButton(
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),
-          onPressed: () {},
+          onPressed: () {
+            var validateResult = formKey.currentState!.validate() ?? false;
+            if (validateResult) {
+              formKey.currentState!.save();
+              context.read<MainViewModel>().addItems(Refrigerator(
+                    name: nameController.text,
+                    count: count,
+                    regdate: regDateController.text,
+                    expdate: expDateController.text,
+                    position: context.read<MainViewModel>().dropdownValue,
+                  ));
+
+              SnackBar(content: Text("저장되었습니다."));
+              Navigator.pop(context);
+            }
+          },
           child: Text(
             "저장",
             style: TextStyle(fontSize: 15, color: Colors.white),
@@ -74,7 +209,9 @@ class RenderElevatedButton extends StatelessWidget {
         ElevatedButton(
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           child: Text(
             "취소",
             style: TextStyle(fontSize: 15, color: Colors.white),
@@ -86,46 +223,35 @@ class RenderElevatedButton extends StatelessWidget {
 }
 
 /// 위치 Widget
-class RenderDropDownButton extends StatefulWidget {
+class RenderDropDownButton extends StatelessWidget {
+  const RenderDropDownButton({super.key, required this.label});
   final String label;
-  String? _dropdownValue;
-  List<String> list = ["냉장실", "냉동실", "신선칸"];
-  RenderDropDownButton({
-    super.key,
-    required this.label,
-  }) {
-    _dropdownValue = list.first;
-  }
 
-  @override
-  State<RenderDropDownButton> createState() => _RenderDropDownButtonState();
-}
-
-/// 위치 Widget
-class _RenderDropDownButtonState extends State<RenderDropDownButton> {
   @override
   Widget build(BuildContext context) {
+    var viewModel = context.read<MainViewModel>();
+    var dropdownValue = context.watch<MainViewModel>().dropdownValue;
+    var list = viewModel.list;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            Text(widget.label,
+            Text(label,
                 style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w700)),
           ],
         ),
         DropdownButton<String>(
-          value: widget._dropdownValue,
-          items: widget.list.map<DropdownMenuItem<String>>((String value) {
+          isExpanded: true,
+          value: dropdownValue,
+          items: list.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
             );
           }).toList(),
           onChanged: (String? value) {
-            setState(() {
-              widget._dropdownValue = value;
-            });
+            viewModel.applyDropdownValue(value);
           },
         ),
         SizedBox(height: 20.0)
@@ -136,16 +262,20 @@ class _RenderDropDownButtonState extends State<RenderDropDownButton> {
 
 /// 식재료명, 등록일, 유통기한 Widget
 class RenderTextFormField extends StatelessWidget {
+  final formKey;
   final String label;
   final FormFieldSetter onSaved;
   final FormFieldValidator validator;
+  TextEditingController? controller;
   bool readOnly;
   int? maxLength;
   RenderTextFormField({
     super.key,
+    required this.formKey,
     required this.label,
     required this.onSaved,
     required this.validator,
+    this.controller,
     this.readOnly = false,
     this.maxLength,
   });
@@ -165,6 +295,7 @@ class RenderTextFormField extends StatelessWidget {
           maxLines: null,
           readOnly: readOnly,
           maxLength: maxLength,
+          controller: controller,
           onSaved: (value) {},
           validator: (value) {},
         ),
@@ -177,8 +308,10 @@ class RenderTextFormField extends StatelessWidget {
 /// 수량 Widget
 class RenderCountWidget extends StatefulWidget {
   final String label;
-  const RenderCountWidget({
+  int count = 1;
+  RenderCountWidget({
     super.key,
+    required this.count,
     required this.label,
   });
 
@@ -188,7 +321,6 @@ class RenderCountWidget extends StatefulWidget {
 
 /// 수량 Widget
 class _RenderCountWidgetState extends State<RenderCountWidget> {
-  int _count = 1;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -205,18 +337,18 @@ class _RenderCountWidgetState extends State<RenderCountWidget> {
               icon: Icon(Icons.remove),
               onPressed: () {
                 setState(() {
-                  if (_count > 0) {
-                    --_count;
+                  if (widget.count > 0) {
+                    --widget.count;
                   }
                 });
               },
             ),
-            Text(_count.toString(), style: TextStyle(fontSize: 18)),
+            Text(widget.count.toString(), style: TextStyle(fontSize: 18)),
             IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
                 setState(() {
-                  ++_count;
+                  ++widget.count;
                 });
               },
             ),

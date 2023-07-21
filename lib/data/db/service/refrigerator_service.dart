@@ -6,7 +6,6 @@ class RefrigeratorService {
     var db = await DBHelper.instance.database;
     String sql = '''
       INSERT INTO ${Refrigerator.tableName}(
-            ${RefrigeratorField.id},
             ${RefrigeratorField.name},
             ${RefrigeratorField.count},
             ${RefrigeratorField.regdate},
