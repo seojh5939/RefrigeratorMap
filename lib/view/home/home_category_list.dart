@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:refrigerator_map/viewModel/main_viewmodel.dart';
 
 class HomeCategoryList extends StatelessWidget {
-  const HomeCategoryList({super.key});
+  final String label;
+  const HomeCategoryList({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +12,7 @@ class HomeCategoryList extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RenderRefrigeratorListTitle(),
+        RenderRefrigeratorListTitle(label: label),
         RenderListView(),
         Padding(
           padding: const EdgeInsets.only(bottom: 50),
@@ -81,8 +84,10 @@ class RenderRefrigeratorItem extends StatelessWidget {
 }
 
 class RenderRefrigeratorListTitle extends StatelessWidget {
+  final String label;
   const RenderRefrigeratorListTitle({
     super.key,
+    required this.label,
   });
 
   @override
@@ -96,7 +101,7 @@ class RenderRefrigeratorListTitle extends StatelessWidget {
             top: 15,
           ),
           child: Text(
-            "냉장실",
+            label,
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
           ),
         ),
