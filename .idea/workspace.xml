@@ -1,31 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0366230d-90b5-47e2-97b1-0c044d0398c9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/db/db_helper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/db_helper.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/db/service/checklist_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/checklist_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/db/service/diet_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/diet_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/db/service/muckitlist_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/muckitlist_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/db/service/refrigerator_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/refrigerator_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/db/service/shopping_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/shopping_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/model/refrigerator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/model/refrigerator.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/util/preference_keys.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/view/common/floating_action_button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/common/floating_action_button.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/view/home/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/home/home_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/view/shopping/add_shopping_item.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/shopping/add_shopping_item.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/view/shopping/add_shopping_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/shopping/add_shopping_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/view/shopping/shopping_item.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/shopping/shopping_item.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/view/shopping/shopping_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/shopping/shopping_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/viewModel/shopping_viewmodel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/viewModel/shopping_viewmodel.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/refrigerator_map.iml" beforeDir="false" afterPath="$PROJECT_DIR$/refrigerator_map.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,16 +36,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "io.flutter.reload.alreadyRun": "true",
-    "last_opened_file_path": "/Users/seojeonghan/Documents/GitHub/refrigerator_map",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/seojeonghan/Documents/GitHub/refrigerator_map&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -94,7 +80,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="Dart">
           <url>file://$PROJECT_DIR$/lib/view/shopping/shopping_item.dart</url>
-          <line>29</line>
+          <line>20</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
