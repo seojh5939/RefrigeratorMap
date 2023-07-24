@@ -29,7 +29,7 @@ class ShoppingService {
   Future<List<Shopping>> getDateShoppingList(String date) async {
     var db = await DBHelper.instance.database;
     String sql = '''
-      SELECT * FROM ${Shopping.tableName} WHERE ${ShoppingField.regdate} = $date
+      SELECT * FROM ${Shopping.tableName} WHERE ${ShoppingField.regdate} = '$date'
     ''';
     var args = [];
     List<Map>? result = await db.rawQuery(sql, args);
@@ -54,7 +54,7 @@ class ShoppingService {
   deleteShoppingList(int id) async {
     var db = await DBHelper.instance.database;
     String sql = '''
-      DELETE FROM ${Shopping.tableName} WHERE ${ShoppingField.id} = $id
+      DELETE FROM ${Shopping.tableName} WHERE ${ShoppingField.id} = '$id'
     ''';
     await db.rawDelete(sql);
   }

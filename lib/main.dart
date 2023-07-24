@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:refrigerator_map/util/global_variable.dart';
 import 'package:refrigerator_map/view/home/home_page.dart';
 import 'package:refrigerator_map/viewModel/bottom_navi_viewmodel.dart';
+import 'package:refrigerator_map/viewModel/main_viewmodel.dart';
 import 'package:refrigerator_map/viewModel/shopping_viewmodel.dart';
 
 import 'viewModel/diet_viewmodel.dart';
@@ -17,6 +18,7 @@ void main() async {
           ChangeNotifierProvider(create: (context) => BottomNaviViewModel()),
           ChangeNotifierProvider(create: (context) => ShoppingViewModel()),
           ChangeNotifierProvider(create: (context) => DietViewModel()),
+          ChangeNotifierProvider(create: (context) => MainViewModel()),
         ],
         child: const MyApp(),
       ),

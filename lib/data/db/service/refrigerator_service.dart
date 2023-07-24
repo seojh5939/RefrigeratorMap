@@ -6,7 +6,6 @@ class RefrigeratorService {
     var db = await DBHelper.instance.database;
     String sql = '''
       INSERT INTO ${Refrigerator.tableName}(
-            ${RefrigeratorField.id},
             ${RefrigeratorField.name},
             ${RefrigeratorField.count},
             ${RefrigeratorField.regdate},
@@ -40,12 +39,36 @@ class RefrigeratorService {
   Future<Refrigerator?> getRefrigeratorList(int id) async {
     var db = await DBHelper.instance.database;
     String sql = '''
-      SELECT * FROM ${Refrigerator.tableName} WHERE ${RefrigeratorField.id} = $id
+      SELECT * FROM ${Refrigerator.tableName} WHERE ${RefrigeratorField.id} = '$id'
     ''';
     var args = [];
     List<Map>? resultQuery = await db.rawQuery(sql, args);
 
     return Refrigerator.toList(resultQuery).firstOrNull;
+  }
+
+  // 개별 조회
+  Future<Refrigerator?> getRefrigeratorListByName(String name) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+      SELECT * FROM ${Refrigerator.tableName} WHERE ${RefrigeratorField.name} = '$name'
+    ''';
+    var args = [];
+    List<Map>? resultQuery = await db.rawQuery(sql, args);
+
+    return Refrigerator.toList(resultQuery).firstOrNull;
+  }
+
+  // 개별 조회
+  Future<List<Refrigerator>> getRefrigeratorListByposition(
+      String position) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+      SELECT * FROM ${Refrigerator.tableName} WHERE ${RefrigeratorField.position} = '$position'
+    ''';
+    var args = [];
+    List<Map>? resultQuery = await db.rawQuery(sql, args);
+    return Refrigerator.toList(resultQuery);
   }
 
   updateRefrigeratorList(args) async {
@@ -71,7 +94,7 @@ class RefrigeratorService {
   deleteRefrigeratorList(int id) async {
     var db = await DBHelper.instance.database;
     String sql = '''
-      DELETE FROM ${Refrigerator.tableName} WHERE ${RefrigeratorField.id} = $id
+      DELETE FROM ${Refrigerator.tableName} WHERE ${RefrigeratorField.id} = '$id'
     ''';
     await db.rawDelete(sql);
   }

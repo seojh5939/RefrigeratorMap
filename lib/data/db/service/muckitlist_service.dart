@@ -43,7 +43,7 @@ class MuckitListService {
   deleteDietList(int id) async {
     var db = await DBHelper.instance.database;
     String sql = '''
-      DELETE FROM ${MuckitList.tableName} WHERE ${MuckitListField.id} = $id
+      DELETE FROM ${MuckitList.tableName} WHERE ${MuckitListField.id} = '$id'
     ''';
     await db.rawDelete(sql);
   }

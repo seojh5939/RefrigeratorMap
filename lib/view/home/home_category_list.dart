@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:refrigerator_map/data/model/refrigerator.dart';
+import 'package:refrigerator_map/viewModel/main_viewmodel.dart';
+
+import 'add_refrigerator_page.dart';
 
 class HomeCategoryList extends StatelessWidget {
-  const HomeCategoryList({super.key});
+  final String label;
+
+  const HomeCategoryList({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -9,8 +16,8 @@ class HomeCategoryList extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RenderRefrigeratorListTitle(),
-        RenderListView(),
+        RenderRefrigeratorListTitle(label: label),
+        RenderListView(label: label),
         Padding(
           padding: const EdgeInsets.only(bottom: 50),
         ),
@@ -21,25 +28,52 @@ class HomeCategoryList extends StatelessWidget {
 
 /// 식재료 item ListView
 class RenderListView extends StatelessWidget {
+  final String label;
+
   const RenderListView({
     super.key,
+    required this.label,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      height: MediaQuery.of(context).size.height * 0.1,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return RenderRefrigeratorItem(
-            label: "식재료명",
-            dDay: "D-100",
-          );
-        },
-      ),
-    );
+    return Consumer<MainViewModel>(builder: (context, viewModel, child) {
+      return Container(
+        padding: EdgeInsets.all(8.0),
+        height: MediaQuery.of(context).size.height * 0.1,
+        child: FutureBuilder(
+            future: context.read<MainViewModel>().getItemsByPosition(label),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData == false) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "Error : ${snapshot.error}",
+                    style: TextStyle(fontSize: 15),
+                  ),
+                );
+              } else {
+                List<Refrigerator> list = snapshot.data;
+                return list.length == 0
+                    ? Container()
+                    : ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: list.length,
+                        itemBuilder: (context, index) {
+                          return RenderRefrigeratorItem(
+                            label: list[index].name,
+                            dDay: (int.parse(list[index].expdate) -
+                                    int.parse(list[index].regdate))
+                                .toString(),
+                          );
+                        },
+                      );
+              }
+            }),
+      );
+    });
   }
 }
 
@@ -47,6 +81,7 @@ class RenderListView extends StatelessWidget {
 class RenderRefrigeratorItem extends StatelessWidget {
   String label;
   String dDay;
+
   RenderRefrigeratorItem({
     super.key,
     required this.label,
@@ -55,34 +90,79 @@ class RenderRefrigeratorItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.2,
-      height: MediaQuery.of(context).size.height * 0.2,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        shape: BoxShape.circle,
-      ),
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.05,
-        child: Column(
-          children: [
-            Text(label),
-            Text(
-              dDay,
-              style: TextStyle(color: Colors.red),
-            ),
-          ],
-        ),
-      ),
-    );
+    return FutureBuilder(
+        future: context.read<MainViewModel>().getItemsByName(label),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData == false) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                "Error : ${snapshot.error}",
+                style: TextStyle(fontSize: 15),
+              ),
+            );
+          } else {
+            Refrigerator data = snapshot.data;
+            return InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => AddRefrigeratorPage(
+                      id: data.id,
+                      name: data.name,
+                      count: data.count,
+                      regDate: data.regdate,
+                      expDate: data.expdate,
+                      position: data.position,
+                      memo: data.memo,
+                    ),
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                  ),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "$label\n",
+                          ),
+                          TextSpan(
+                            text: "D-$dDay",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+        });
   }
 }
 
 class RenderRefrigeratorListTitle extends StatelessWidget {
+  final String label;
+
   const RenderRefrigeratorListTitle({
     super.key,
+    required this.label,
   });
 
   @override
@@ -96,7 +176,7 @@ class RenderRefrigeratorListTitle extends StatelessWidget {
             top: 15,
           ),
           child: Text(
-            "냉장실",
+            label,
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
           ),
         ),

@@ -43,7 +43,7 @@ class DietService {
   deleteDietList(int id) async {
     var db = await DBHelper.instance.database;
     String sql = '''
-      DELETE FROM ${Diet.tableName} WHERE ${DietField.id} = $id
+      DELETE FROM ${Diet.tableName} WHERE ${DietField.id} = '$id'
     ''';
     await db.rawDelete(sql);
   }

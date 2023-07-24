@@ -8,6 +8,7 @@ class CustomFloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      heroTag: "fBtn1",
       backgroundColor: ColorList.black,
       onPressed: onTab,
       child: Icon(Icons.add, color: ColorList.white),
