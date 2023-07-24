@@ -6,9 +6,24 @@ import 'package:refrigerator_map/viewModel/main_viewmodel.dart';
 
 /// 냉장고 식재료 추가 페이지
 class AddRefrigeratorPage extends StatelessWidget {
-  AddRefrigeratorPage({super.key});
+  String? name;
+  int? count;
+  String? regDate;
+  String? expDate;
+  String? position;
+  String? memo;
+
+  AddRefrigeratorPage({
+    super.key,
+    this.name,
+    this.count,
+    this.regDate,
+    this.expDate,
+    this.position,
+    this.memo,
+  });
+
   var nameController = TextEditingController();
-  int _count = 1; // 수량
   var regDateController = TextEditingController();
   var expDateController = TextEditingController();
   var memoController = TextEditingController();
@@ -16,6 +31,7 @@ class AddRefrigeratorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    initPageData();
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -25,7 +41,7 @@ class AddRefrigeratorPage extends StatelessWidget {
               key: _formKey,
               child: Column(
                 children: [
-                  Text("냉장고에 어떤 식재료를 추가하시겠어요?",
+                  Text(name == null ? "냉장고에 어떤 식재료를 추가하시겠어요?" : "식재료 정보",
                       style:
                           TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
                   SizedBox(height: 25.0),
@@ -54,7 +70,7 @@ class AddRefrigeratorPage extends StatelessWidget {
                   SizedBox(height: 20.0),
                   RenderCountWidget(
                     label: '수량',
-                    count: _count,
+                    count: count ?? 1,
                   ),
                   Row(
                     children: [
@@ -124,6 +140,7 @@ class AddRefrigeratorPage extends StatelessWidget {
                   SizedBox(height: 20.0),
                   RenderDropDownButton(
                     label: '위치',
+                    position: position,
                   ),
                   Row(
                     children: [
@@ -147,7 +164,7 @@ class AddRefrigeratorPage extends StatelessWidget {
                     regDateController: regDateController,
                     expDateController: expDateController,
                     memoController: memoController,
-                    count: _count,
+                    count: count,
                   ),
                 ],
               ),
@@ -157,15 +174,28 @@ class AddRefrigeratorPage extends StatelessWidget {
       ),
     );
   }
+
+  // 페이지 데이터 Init
+  initPageData() {
+    nameController.text = name ?? "";
+    regDateController.text = regDate ?? "";
+    expDateController.text = expDate ?? "";
+    if (memo == "null") {
+      memoController.text = "";
+    } else {
+      memoController.text = memo!;
+    }
+  }
 }
 
 class RenderElevatedButton extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final nameController;
-  final int count;
+  final int? count;
   final regDateController;
   final expDateController;
   final memoController;
+
   const RenderElevatedButton({
     super.key,
     required this.formKey,
@@ -188,9 +218,10 @@ class RenderElevatedButton extends StatelessWidget {
             var validateResult = formKey.currentState!.validate() ?? false;
             if (validateResult) {
               formKey.currentState!.save();
+              // TODO 저장전 name 중복여부 확인 후 예외처리
               context.read<MainViewModel>().addItems(Refrigerator(
                     name: nameController.text,
-                    count: count,
+                    count: count ?? 1,
                     regdate: regDateController.text,
                     expdate: expDateController.text,
                     position: context.read<MainViewModel>().dropdownValue,
@@ -224,13 +255,16 @@ class RenderElevatedButton extends StatelessWidget {
 
 /// 위치 Widget
 class RenderDropDownButton extends StatelessWidget {
-  const RenderDropDownButton({super.key, required this.label});
+  const RenderDropDownButton({super.key, required this.label, this.position});
+
   final String label;
+  final String? position;
 
   @override
   Widget build(BuildContext context) {
     var viewModel = context.read<MainViewModel>();
-    var dropdownValue = context.watch<MainViewModel>().dropdownValue;
+    var dropdownValue =
+        position ?? context.watch<MainViewModel>().dropdownValue;
     var list = viewModel.list;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,6 +303,7 @@ class RenderTextFormField extends StatelessWidget {
   TextEditingController? controller;
   bool readOnly;
   int? maxLength;
+
   RenderTextFormField({
     super.key,
     required this.formKey,
@@ -308,7 +343,8 @@ class RenderTextFormField extends StatelessWidget {
 /// 수량 Widget
 class RenderCountWidget extends StatefulWidget {
   final String label;
-  int count = 1;
+  int count;
+
   RenderCountWidget({
     super.key,
     required this.count,

@@ -48,6 +48,18 @@ class RefrigeratorService {
   }
 
   // 개별 조회
+  Future<Refrigerator?> getRefrigeratorListByName(String name) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+      SELECT * FROM ${Refrigerator.tableName} WHERE ${RefrigeratorField.name} = '$name'
+    ''';
+    var args = [];
+    List<Map>? resultQuery = await db.rawQuery(sql, args);
+
+    return Refrigerator.toList(resultQuery).firstOrNull;
+  }
+
+  // 개별 조회
   Future<List<Refrigerator>> getRefrigeratorListByposition(
       String position) async {
     var db = await DBHelper.instance.database;

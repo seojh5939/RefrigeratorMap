@@ -27,6 +27,7 @@ class HomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
+            heroTag: "removeBtn1",
             backgroundColor: Colors.black,
             onPressed: () => Navigator.push(
               context,

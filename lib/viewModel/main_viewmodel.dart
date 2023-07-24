@@ -23,6 +23,10 @@ class MainViewModel extends ChangeNotifier {
     return await service.getRefrigeratorListByposition(position);
   }
 
+  Future<Refrigerator?> getItemsByName(String name) async {
+    return await service.getRefrigeratorListByName(name);
+  }
+
   Future<Refrigerator?> getItemsById(int id) async {
     return await service.getRefrigeratorList(id);
   }

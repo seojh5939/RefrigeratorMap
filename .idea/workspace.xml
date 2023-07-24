@@ -12,6 +12,8 @@
     <list default="true" id="0366230d-90b5-47e2-97b1-0c044d0398c9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/data/db/service/refrigerator_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/refrigerator_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/view/common/floating_action_button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/common/floating_action_button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/view/home/add_refrigerator_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/home/add_refrigerator_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/view/home/home_category_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/home/home_category_list.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/view/home/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/home/home_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/viewModel/main_viewmodel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/viewModel/main_viewmodel.dart" afterDir="false" />
@@ -112,6 +114,9 @@
     "dart.analysis.tool.window.visible": "false",
     "io.flutter.reload.alreadyRun": "true",
     "last_opened_file_path": "/Users/seojeonghan/Documents/GitHub/refrigerator_map",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "show.migrate.to.gradle.popup": "false"
   }
