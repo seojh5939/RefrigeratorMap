@@ -23,14 +23,32 @@ class HomePage extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      floatingActionButton: CustomFloatingActionButton(onTab: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => AddRefrigeratorPage(),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            backgroundColor: Colors.black,
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => AddRefrigeratorPage(),
+              ),
+            ),
+            child: Icon(Icons.delete, color: Colors.white),
           ),
-        );
-      }),
+          SizedBox(
+            width: 10,
+          ),
+          CustomFloatingActionButton(
+            onTab: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => AddRefrigeratorPage(),
+              ),
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNaviBar(),
     );
   }

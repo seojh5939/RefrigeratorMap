@@ -4,7 +4,7 @@ import 'package:refrigerator_map/data/model/refrigerator.dart';
 
 class MainViewModel extends ChangeNotifier {
   var service = RefrigeratorService();
-  List<Refrigerator> itemList = [];
+  // List<Refrigerator> itemList = [];
   List<String> list = ["냉장실", "냉동실", "신선칸"];
   var dropdownValue;
   MainViewModel() {
@@ -16,13 +16,11 @@ class MainViewModel extends ChangeNotifier {
   }
 
   Future<List<Refrigerator>> getAllItems() async {
-    itemList = await service.getAllRefrigeratorList();
-    return itemList;
+    return await service.getAllRefrigeratorList();
   }
 
   Future<List<Refrigerator>> getItemsByPosition(String position) async {
-    itemList = await service.getRefrigeratorListByposition(position);
-    return itemList;
+    return await service.getRefrigeratorListByposition(position);
   }
 
   Future<Refrigerator?> getItemsById(int id) async {

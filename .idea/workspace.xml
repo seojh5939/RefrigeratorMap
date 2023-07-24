@@ -11,13 +11,9 @@
   <component name="ChangeListManager">
     <list default="true" id="0366230d-90b5-47e2-97b1-0c044d0398c9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/db/service/checklist_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/checklist_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/db/service/diet_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/diet_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/db/service/muckitlist_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/muckitlist_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/data/db/service/refrigerator_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/refrigerator_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/db/service/shopping_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/shopping_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/view/home/add_refrigerator_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/home/add_refrigerator_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/view/home/home_category_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/home/home_category_list.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/view/home/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/home/home_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/viewModel/main_viewmodel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/viewModel/main_viewmodel.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

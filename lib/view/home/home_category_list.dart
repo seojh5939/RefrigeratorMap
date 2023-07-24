@@ -83,25 +83,32 @@ class RenderRefrigeratorItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.2,
-      height: MediaQuery.of(context).size.height * 0.2,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        shape: BoxShape.circle,
-      ),
-      child: SizedBox(
+    return Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: Container(
         width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.05,
-        child: Column(
-          children: [
-            Text(label),
-            Text(
-              dDay,
-              style: TextStyle(color: Colors.red),
+        height: MediaQuery.of(context).size.height * 0.2,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+        ),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.2,
+          height: MediaQuery.of(context).size.height * 0.05,
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: "$label\n",
+                ),
+                TextSpan(
+                  text: "D-$dDay",
+                  style: TextStyle(color: Colors.red),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

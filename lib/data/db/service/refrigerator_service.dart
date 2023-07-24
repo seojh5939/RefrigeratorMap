@@ -5,7 +5,7 @@ class RefrigeratorService {
   addRefrigeratorList(Refrigerator data) async {
     var db = await DBHelper.instance.database;
     String sql = '''
-      INSERT ITO ${Refrigerator.tableName}(
+      INSERT INTO ${Refrigerator.tableName}(
             ${RefrigeratorField.name},
             ${RefrigeratorField.count},
             ${RefrigeratorField.regdate},
