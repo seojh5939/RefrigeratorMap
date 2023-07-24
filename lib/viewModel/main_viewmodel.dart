@@ -31,8 +31,8 @@ class MainViewModel extends ChangeNotifier {
     return await service.getRefrigeratorList(id);
   }
 
-  addItems(Refrigerator data) {
-    service.addRefrigeratorList(data);
+  addItems(Refrigerator data) async {
+    await service.addRefrigeratorList(data);
     notifyListeners();
   }
 
@@ -46,6 +46,7 @@ class MainViewModel extends ChangeNotifier {
       args.memo,
       args.id
     ]);
+    notifyListeners();
   }
 
   removeItems(int id) async {

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:refrigerator_map/data/model/refrigerator.dart';
+import 'package:refrigerator_map/util/global_variable.dart';
 import 'package:refrigerator_map/viewModel/main_viewmodel.dart';
 
 /// 냉장고 식재료 추가 페이지
 class AddRefrigeratorPage extends StatelessWidget {
+  int? id;
   String? name;
   int? count;
   String? regDate;
@@ -15,6 +17,7 @@ class AddRefrigeratorPage extends StatelessWidget {
 
   AddRefrigeratorPage({
     super.key,
+    this.id,
     this.name,
     this.count,
     this.regDate,
@@ -140,7 +143,6 @@ class AddRefrigeratorPage extends StatelessWidget {
                   SizedBox(height: 20.0),
                   RenderDropDownButton(
                     label: '위치',
-                    position: position,
                   ),
                   Row(
                     children: [
@@ -159,6 +161,7 @@ class AddRefrigeratorPage extends StatelessWidget {
                   ),
                   SizedBox(height: 20.0),
                   RenderElevatedButton(
+                    id: id,
                     formKey: _formKey,
                     nameController: nameController,
                     regDateController: regDateController,
@@ -183,12 +186,13 @@ class AddRefrigeratorPage extends StatelessWidget {
     if (memo == "null") {
       memoController.text = "";
     } else {
-      memoController.text = memo!;
+      memoController.text = memo ?? "";
     }
   }
 }
 
 class RenderElevatedButton extends StatelessWidget {
+  final int? id;
   final GlobalKey<FormState> formKey;
   final nameController;
   final int? count;
@@ -198,6 +202,7 @@ class RenderElevatedButton extends StatelessWidget {
 
   const RenderElevatedButton({
     super.key,
+    this.id,
     required this.formKey,
     required this.nameController,
     required this.count,
@@ -219,13 +224,25 @@ class RenderElevatedButton extends StatelessWidget {
             if (validateResult) {
               formKey.currentState!.save();
               // TODO 저장전 name 중복여부 확인 후 예외처리
-              context.read<MainViewModel>().addItems(Refrigerator(
-                    name: nameController.text,
-                    count: count ?? 1,
-                    regdate: regDateController.text,
-                    expdate: expDateController.text,
-                    position: context.read<MainViewModel>().dropdownValue,
-                  ));
+              if (id != null) {
+                context.read<MainViewModel>().updateItems(Refrigerator(
+                      name: nameController.text,
+                      count: count ?? 1,
+                      regdate: regDateController.text,
+                      expdate: expDateController.text,
+                      position: context.read<MainViewModel>().dropdownValue,
+                      memo: memoController.text,
+                      id: id,
+                    ));
+              } else {
+                context.read<MainViewModel>().addItems(Refrigerator(
+                      name: nameController.text,
+                      count: count ?? 1,
+                      regdate: regDateController.text,
+                      expdate: expDateController.text,
+                      position: context.read<MainViewModel>().dropdownValue,
+                    ));
+              }
 
               SnackBar(content: Text("저장되었습니다."));
               Navigator.pop(context);
@@ -255,16 +272,14 @@ class RenderElevatedButton extends StatelessWidget {
 
 /// 위치 Widget
 class RenderDropDownButton extends StatelessWidget {
-  const RenderDropDownButton({super.key, required this.label, this.position});
+  const RenderDropDownButton({super.key, required this.label});
 
   final String label;
-  final String? position;
 
   @override
   Widget build(BuildContext context) {
     var viewModel = context.read<MainViewModel>();
-    var dropdownValue =
-        position ?? context.watch<MainViewModel>().dropdownValue;
+    var dropdownValue = context.watch<MainViewModel>().dropdownValue;
     var list = viewModel.list;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -37,41 +37,43 @@ class RenderListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      height: MediaQuery.of(context).size.height * 0.1,
-      child: FutureBuilder(
-          future: context.read<MainViewModel>().getItemsByPosition(label),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData == false) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  "Error : ${snapshot.error}",
-                  style: TextStyle(fontSize: 15),
-                ),
-              );
-            } else {
-              List<Refrigerator> list = snapshot.data;
-              return list.length == 0
-                  ? Container()
-                  : ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: list.length,
-                      itemBuilder: (context, index) {
-                        return RenderRefrigeratorItem(
-                          label: list[index].name,
-                          dDay: (int.parse(list[index].expdate) -
-                                  int.parse(list[index].regdate))
-                              .toString(),
-                        );
-                      },
-                    );
-            }
-          }),
-    );
+    return Consumer<MainViewModel>(builder: (context, viewModel, child) {
+      return Container(
+        padding: EdgeInsets.all(8.0),
+        height: MediaQuery.of(context).size.height * 0.1,
+        child: FutureBuilder(
+            future: context.read<MainViewModel>().getItemsByPosition(label),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData == false) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "Error : ${snapshot.error}",
+                    style: TextStyle(fontSize: 15),
+                  ),
+                );
+              } else {
+                List<Refrigerator> list = snapshot.data;
+                return list.length == 0
+                    ? Container()
+                    : ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: list.length,
+                        itemBuilder: (context, index) {
+                          return RenderRefrigeratorItem(
+                            label: list[index].name,
+                            dDay: (int.parse(list[index].expdate) -
+                                    int.parse(list[index].regdate))
+                                .toString(),
+                          );
+                        },
+                      );
+              }
+            }),
+      );
+    });
   }
 }
 
@@ -109,6 +111,7 @@ class RenderRefrigeratorItem extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (_) => AddRefrigeratorPage(
+                      id: data.id,
                       name: data.name,
                       count: data.count,
                       regDate: data.regdate,
