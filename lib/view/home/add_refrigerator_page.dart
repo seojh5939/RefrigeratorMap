@@ -213,6 +213,7 @@ class RenderElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var viewModel = context.read<MainViewModel>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -223,29 +224,54 @@ class RenderElevatedButton extends StatelessWidget {
             var validateResult = formKey.currentState!.validate() ?? false;
             if (validateResult) {
               formKey.currentState!.save();
-              // TODO 저장전 name 중복여부 확인 후 예외처리
               if (id != null) {
-                context.read<MainViewModel>().updateItems(Refrigerator(
-                      name: nameController.text,
-                      count: count ?? 1,
-                      regdate: regDateController.text,
-                      expdate: expDateController.text,
-                      position: context.read<MainViewModel>().dropdownValue,
-                      memo: memoController.text,
-                      id: id,
-                    ));
+                viewModel.updateItems(Refrigerator(
+                  name: nameController.text,
+                  count: count ?? 1,
+                  regdate: regDateController.text,
+                  expdate: expDateController.text,
+                  position: context.read<MainViewModel>().dropdownValue,
+                  memo: memoController.text,
+                  id: id,
+                ));
+                Navigator.pop(context);
               } else {
-                context.read<MainViewModel>().addItems(Refrigerator(
+                // TODO 저장전 name 중복여부 확인 후 예외처리
+                viewModel.getAllItems().then((value) {
+                  if (value
+                      .where((element) => element.name == nameController.text)
+                      .isNotEmpty) {
+                    showDialog(
+                      barrierDismissible: false,
+                      context:
+                          GlobalAccessContext.navigatorState.currentContext!,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: Text("타이틀 입력"),
+                        content: ListTile(
+                          title: Text("이미 냉장고에 존재하는 식재료품목입니다."),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("확인"),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    viewModel.addItems(Refrigerator(
                       name: nameController.text,
                       count: count ?? 1,
                       regdate: regDateController.text,
                       expdate: expDateController.text,
                       position: context.read<MainViewModel>().dropdownValue,
                     ));
+                    Navigator.pop(context);
+                  }
+                });
               }
-
-              SnackBar(content: Text("저장되었습니다."));
-              Navigator.pop(context);
             }
           },
           child: Text(
