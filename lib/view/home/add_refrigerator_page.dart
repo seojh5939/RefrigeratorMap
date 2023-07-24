@@ -236,7 +236,6 @@ class RenderElevatedButton extends StatelessWidget {
                 ));
                 Navigator.pop(context);
               } else {
-                // TODO 저장전 name 중복여부 확인 후 예외처리
                 viewModel.getAllItems().then((value) {
                   if (value
                       .where((element) => element.name == nameController.text)
@@ -246,7 +245,7 @@ class RenderElevatedButton extends StatelessWidget {
                       context:
                           GlobalAccessContext.navigatorState.currentContext!,
                       builder: (BuildContext context) => AlertDialog(
-                        title: Text("타이틀 입력"),
+                        title: Text("타이틀 중복오류"),
                         content: ListTile(
                           title: Text("이미 냉장고에 존재하는 식재료품목입니다."),
                         ),

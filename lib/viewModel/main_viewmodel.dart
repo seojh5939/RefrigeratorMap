@@ -51,5 +51,6 @@ class MainViewModel extends ChangeNotifier {
 
   removeItems(int id) async {
     await service.deleteRefrigeratorList(id);
+    notifyListeners();
   }
 }
