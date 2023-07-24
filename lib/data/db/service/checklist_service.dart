@@ -32,7 +32,7 @@ class CheckListService {
       ${CheckListField.amount},
       ${CheckListField.ischeck}
       from ${CheckList.tableName}
-      where ${CheckListField.title} = $title
+      where ${CheckListField.title} = '$title'
     ''';
     var args = [];
     List<Map> result = await db.transaction(
@@ -54,7 +54,7 @@ class CheckListService {
       ${CheckListField.amount},
       ${CheckListField.ischeck}
       FROM ${CheckList.tableName}
-      WHERE ${CheckListField.title} = $title AND ${CheckListField.id} = ${id.toString()}
+      WHERE ${CheckListField.title} = '$title' AND ${CheckListField.id} = '${id.toString()}'
     ''';
     var args = [];
     List<Map>? result = await db.rawQuery(sql, args);
@@ -92,7 +92,7 @@ class CheckListService {
   deleteCheckList(int id) async {
     var db = await DBHelper.instance.database;
     String sql = '''
-      DELETE FROM ${CheckList.tableName} WHERE ${CheckListField.id} = $id
+      DELETE FROM ${CheckList.tableName} WHERE ${CheckListField.id} = '$id'
     ''';
     await db.rawDelete(sql);
   }

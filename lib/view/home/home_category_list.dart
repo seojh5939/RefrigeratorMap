@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:refrigerator_map/data/model/refrigerator.dart';
 import 'package:refrigerator_map/viewModel/main_viewmodel.dart';
 
 class HomeCategoryList extends StatelessWidget {
@@ -13,7 +14,7 @@ class HomeCategoryList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RenderRefrigeratorListTitle(label: label),
-        RenderListView(),
+        RenderListView(label: label),
         Padding(
           padding: const EdgeInsets.only(bottom: 50),
         ),
@@ -24,8 +25,10 @@ class HomeCategoryList extends StatelessWidget {
 
 /// 식재료 item ListView
 class RenderListView extends StatelessWidget {
+  final String label;
   const RenderListView({
     super.key,
+    required this.label,
   });
 
   @override
@@ -33,15 +36,37 @@ class RenderListView extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(8.0),
       height: MediaQuery.of(context).size.height * 0.1,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return RenderRefrigeratorItem(
-            label: "식재료명",
-            dDay: "D-100",
-          );
-        },
-      ),
+      child: FutureBuilder(
+          future: context.read<MainViewModel>().getItemsByPosition(label),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData == false) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  "Error : ${snapshot.error}",
+                  style: TextStyle(fontSize: 15),
+                ),
+              );
+            } else {
+              List<Refrigerator> list = snapshot.data;
+              return list.length == 0
+                  ? Container()
+                  : ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: list.length,
+                      itemBuilder: (context, index) {
+                        return RenderRefrigeratorItem(
+                          label: list[index].name,
+                          dDay: (int.parse(list[index].expdate) -
+                                  int.parse(list[index].regdate))
+                              .toString(),
+                        );
+                      },
+                    );
+            }
+          }),
     );
   }
 }

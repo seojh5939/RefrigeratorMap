@@ -82,7 +82,7 @@ class AddRefrigeratorPage extends StatelessWidget {
                           lastDate: DateTime.now());
                       if (selected != null) {
                         var selectedDate =
-                            (DateFormat.yMMMd()).format(selected);
+                            (DateFormat('yyyyMMdd')).format(selected);
                         regDateController.text = selectedDate.toString();
                       }
                     },
@@ -115,7 +115,7 @@ class AddRefrigeratorPage extends StatelessWidget {
                           lastDate: DateTime.now());
                       if (selected != null) {
                         var selectedDate =
-                            (DateFormat.yMMMd()).format(selected);
+                            (DateFormat('yyyyMMdd')).format(selected);
                         expDateController.text = selectedDate.toString();
                       }
                     },

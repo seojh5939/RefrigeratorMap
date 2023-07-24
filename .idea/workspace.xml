@@ -10,8 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0366230d-90b5-47e2-97b1-0c044d0398c9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/data/db/service/checklist_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/checklist_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/data/db/service/diet_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/diet_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/data/db/service/muckitlist_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/muckitlist_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/data/db/service/refrigerator_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/refrigerator_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/data/db/service/shopping_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/db/service/shopping_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/view/home/add_refrigerator_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/home/add_refrigerator_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/view/home/home_category_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/home/home_category_list.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/view/home/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/home/home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/viewModel/main_viewmodel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/viewModel/main_viewmodel.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,13 +77,21 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/.pub-cache/hosted/pub.dev/sqflite-2.2.8+4/lib/src/exception_impl.dart" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/.pub-cache/hosted/pub.dev/synchronized-3.1.0/lib/src/basic_lock.dart" root0="SKIP_INSPECTION" />
     <setting file="file://$USER_HOME$/Dev/flutter/packages/flutter/lib/src/material/dropdown.dart" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/Dev/flutter/packages/flutter/lib/src/scheduler/binding.dart" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/Dev/flutter/packages/flutter/lib/src/services/binding.dart" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/Dev/flutter/packages/flutter/lib/src/services/platform_channel.dart" root0="SKIP_INSPECTION" />
     <setting file="file://$USER_HOME$/Dev/flutter/packages/flutter/lib/src/widgets/async.dart" root0="SKIP_INSPECTION" />
     <setting file="file://$USER_HOME$/Dev/flutter/packages/flutter/lib/src/widgets/editable_text.dart" root0="SKIP_INSPECTION" />
     <setting file="file://$USER_HOME$/Dev/flutter/packages/flutter/lib/src/widgets/framework.dart" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2SlwDPRUPvwqaAYTy9GFublIFqg" />
   <component name="ProjectLevelVcsManager">
@@ -101,7 +116,7 @@
     "dart.analysis.tool.window.visible": "false",
     "io.flutter.reload.alreadyRun": "true",
     "last_opened_file_path": "/Users/seojeonghan/Documents/GitHub/refrigerator_map",
-    "settings.editor.selected.configurable": "flutter.settings",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>
@@ -135,13 +150,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="Dart">
-          <url>file://$PROJECT_DIR$/lib/view/shopping/shopping_item.dart</url>
-          <line>20</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="dart-exception" />
       </default-breakpoints>
