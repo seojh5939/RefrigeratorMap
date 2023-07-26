@@ -17,7 +17,12 @@ class ShoppingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  changeSelectedToggle(bool changeValue) {}
+  changeSelectedToggle(int index) {
+    for (int i = 0; i < isSelectedToggleBtn.length; i++) {
+      isSelectedToggleBtn[i] = i == index;
+    }
+    notifyListeners();
+  }
 
   bool isSameDay(DateTime day) {
     return selectedDay == day;

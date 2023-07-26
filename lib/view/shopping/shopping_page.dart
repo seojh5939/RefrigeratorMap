@@ -155,22 +155,13 @@ class RenderToggleButtons extends StatefulWidget {
 }
 
 class _RenderToggleButtonsState extends State<RenderToggleButtons> {
-  final List<bool> _isSelected = [true, false];
-
   @override
   Widget build(BuildContext context) {
+    var viewModel = context.read<ShoppingViewModel>();
     return ToggleButtons(
-      onPressed: (index) {
-        setState(
-          () {
-            for (int i = 0; i < _isSelected.length; i++) {
-              _isSelected[i] = i == index;
-            }
-          },
-        );
-      },
+      onPressed: (index) => viewModel.changeSelectedToggle(index),
       fillColor: Colors.black,
-      isSelected: _isSelected,
+      isSelected: context.watch<ShoppingViewModel>().isSelectedToggleBtn,
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -178,7 +169,11 @@ class _RenderToggleButtonsState extends State<RenderToggleButtons> {
             "장보기 목록",
             style: TextStyle(
               fontSize: 17,
-              color: _isSelected[0] == true ? ColorList.white : ColorList.black,
+              color:
+                  context.watch<ShoppingViewModel>().isSelectedToggleBtn[0] ==
+                          true
+                      ? ColorList.white
+                      : ColorList.black,
             ),
           ),
         ),
@@ -188,7 +183,11 @@ class _RenderToggleButtonsState extends State<RenderToggleButtons> {
             "장보기 완료",
             style: TextStyle(
               fontSize: 17,
-              color: _isSelected[1] == true ? ColorList.white : ColorList.black,
+              color:
+                  context.watch<ShoppingViewModel>().isSelectedToggleBtn[1] ==
+                          true
+                      ? ColorList.white
+                      : ColorList.black,
             ),
           ),
         ),

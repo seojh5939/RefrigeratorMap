@@ -31,20 +31,15 @@ class ShoppingItem extends StatelessWidget {
             ),
           );
         } else {
-          List<Shopping> shoppingList = snapshot.data;
-          return ListView.builder(
-            shrinkWrap: true,
-            primary: false,
-            itemCount: shoppingList.length,
-            itemBuilder: (context, index) {
-              // 장보기 제목 && 체크박스
-              return RenderExpansionTile(
-                index: index,
-                title: shoppingList[index].title,
-                shoppingList: shoppingList,
-              );
-            },
-          );
+          List<Shopping> shoppingData = snapshot.data;
+          List<Shopping> shoppingListIsDone =
+              shoppingData.where((element) => element.isdone == true).toList();
+          List<Shopping> shoppingList =
+              shoppingData.where((element) => element.isdone == false).toList();
+          return RenderListView(
+              shoppingList: viewModel.isSelectedToggleBtn[0] == true
+                  ? shoppingList
+                  : shoppingListIsDone);
         }
       },
     );
@@ -54,6 +49,29 @@ class ShoppingItem extends StatelessWidget {
   Future<List<Shopping>> _getAllShoppingLists(
           ShoppingViewModel viewModel) async =>
       await viewModel.getAllShoppingList();
+}
+
+class RenderListView extends StatelessWidget {
+  final List<Shopping> shoppingList;
+
+  const RenderListView({super.key, required this.shoppingList});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      primary: false,
+      itemCount: shoppingList.length,
+      itemBuilder: (context, index) {
+        // 장보기 제목 && 체크박스
+        return RenderExpansionTile(
+          index: index,
+          title: shoppingList[index].title,
+          shoppingList: shoppingList,
+        );
+      },
+    );
+  }
 }
 
 /// 장보기 제목&&체크박스
