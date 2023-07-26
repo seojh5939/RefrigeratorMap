@@ -7,6 +7,7 @@ import 'package:refrigerator_map/viewModel/shopping_viewmodel.dart';
 /// 장보기 목록 추가 페이지
 class AddShoppingPage extends StatefulWidget {
   AddShoppingPage({required this.title});
+
   String title;
 
   @override
@@ -68,6 +69,7 @@ class _AddShoppingPageState extends State<AddShoppingPage> {
 
 class RenderCheckBoxListTile extends StatelessWidget {
   String title;
+
   RenderCheckBoxListTile({
     super.key,
     required this.title,
@@ -117,6 +119,7 @@ class RenderCheckBoxListTile extends StatelessWidget {
 
 class RenderCheckboxListTile extends StatelessWidget {
   RenderCheckboxListTile({required this.list, required this.index});
+
   int index;
   List<CheckList> list;
 
@@ -179,6 +182,7 @@ class RenderElevatedButton extends StatelessWidget {
   final TextEditingController contentController;
   final TextEditingController amountController;
   final void Function()? onPressed;
+
   const RenderElevatedButton({
     super.key,
     required this.viewModel,
@@ -210,6 +214,7 @@ class RenderListTile extends StatelessWidget {
   final TextEditingController? controller;
   final void Function()? onTap;
   final bool? readOnly;
+
   const RenderListTile({
     super.key,
     required this.label,
@@ -231,6 +236,9 @@ class RenderListTile extends StatelessWidget {
       subtitle: SizedBox(
         width: MediaQuery.of(context).size.width * 0.7,
         child: TextField(
+          onChanged: (value) {
+            controller?.text = value;
+          },
           readOnly: readOnly ?? false,
           onTap: onTap,
           decoration: InputDecoration(
