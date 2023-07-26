@@ -5,6 +5,13 @@
 For building and running the application you need:
 - Flutter 3.10.5
 - Dart 3.68.1
+- cupertino_icons: ^1.0.2
+- provider: ^6.0.5
+- table_calendar: ^3.0.9
+- intl: ^0.18.1
+- sqflite: ^2.2.8+4
+- path: ^1.8.3
+  
 ### Installation
 > $git clone git@github.com:seojh5939/RefrigeratorMap.git
 
@@ -15,8 +22,12 @@ For building and running the application you need:
 <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
 <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
 
+### Design
+![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
+
 ### Development
-<img src="https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white">
+<img src="https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white"> ![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)
+
 
 ### 주요 기능
 가정의 필요에 의해 만들어보는 냉장고지도 앱입니다.
