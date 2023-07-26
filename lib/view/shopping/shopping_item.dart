@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:refrigerator_map/data/model/checklist.dart';
 import 'package:refrigerator_map/data/model/shopping.dart';
 import 'package:refrigerator_map/style/color.dart';
+import 'package:refrigerator_map/view/shopping/add_shopping_page.dart';
 import 'package:refrigerator_map/viewModel/shopping_viewmodel.dart';
 import 'dart:developer' as developer;
 
@@ -71,20 +72,84 @@ class RenderExpansionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _createCheckBoxListTileWidgetLists(context),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData == false) {
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                "Error : ${snapshot.error}",
-                style: TextStyle(fontSize: 15),
+      future: _createCheckBoxListTileWidgetLists(context),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData == false) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Error : ${snapshot.error}",
+              style: TextStyle(fontSize: 15),
+            ),
+          );
+        } else {
+          return Dismissible(
+            key: UniqueKey(),
+            background: Container(
+              color: Colors.amber,
+              child: Padding(
+                padding: EdgeInsets.only(left: 40),
+                child: Align(
+                    alignment: Alignment.centerLeft, child: Icon(Icons.edit)),
               ),
-            );
-          } else {
-            return ExpansionTile(
+            ),
+            secondaryBackground: Container(
+              color: Colors.red,
+              child: Padding(
+                padding: EdgeInsets.only(right: 40),
+                child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Icon(Icons.delete)),
+              ),
+            ),
+            onDismissed: (direction) {
+              if (direction == DismissDirection.startToEnd) {
+                print("Edit");
+              } else {
+                print("remove");
+              }
+            },
+            confirmDismiss: (direction) {
+              if (direction == DismissDirection.startToEnd) {
+                return _showDialogEditOrRemove(
+                  context,
+                  "수정하기",
+                  "수정하시겠습니까?",
+                  () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => AddShoppingPage(title: title),
+                      ),
+                    );
+                  },
+                  () {
+                    Navigator.pop(context);
+                    context.read<ShoppingViewModel>().refreshPage();
+                  },
+                );
+              } else {
+                return _showDialogEditOrRemove(
+                  context,
+                  "삭제하기",
+                  "삭제하시겠습니까?",
+                  () {
+                    Navigator.pop(context);
+                    context
+                        .read<ShoppingViewModel>()
+                        .removeShoppingList(shoppingList[index].id!);
+                  },
+                  () {
+                    Navigator.pop(context);
+                    context.read<ShoppingViewModel>().refreshPage();
+                  },
+                );
+              }
+            },
+            child: ExpansionTile(
               initiallyExpanded: true,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -94,9 +159,32 @@ class RenderExpansionTile extends StatelessWidget {
                 ],
               ),
               children: snapshot.data,
-            );
-          }
-        });
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  _showDialogEditOrRemove(BuildContext context, String label, String content,
+      void Function() onConfirm, void Function() onCancel) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(label),
+        content: Text(content),
+        actions: [
+          TextButton(
+            onPressed: onConfirm,
+            child: Text("확인"),
+          ),
+          TextButton(
+            onPressed: onCancel,
+            child: Text("취소"),
+          ),
+        ],
+      ),
+    );
   }
 
   /// CheckBoxListTile 생성 후 Widget에 Add
@@ -128,6 +216,7 @@ class RenderExpansionTile extends StatelessWidget {
 
 class RenderSwitch extends StatelessWidget {
   final String title;
+
   const RenderSwitch({super.key, required this.title});
 
   @override

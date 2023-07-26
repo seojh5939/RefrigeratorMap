@@ -15,7 +15,6 @@ class AddShoppingPage extends StatefulWidget {
 }
 
 class _AddShoppingPageState extends State<AddShoppingPage> {
-  List<Shopping> tempList = [];
   final contentController = TextEditingController();
   final amountController = TextEditingController();
 

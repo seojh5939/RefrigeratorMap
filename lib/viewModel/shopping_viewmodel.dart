@@ -13,6 +13,10 @@ class ShoppingViewModel extends ChangeNotifier {
   DateTime? selectedDay;
   List<bool> isSelectedToggleBtn = [true, false]; // 장보기 목록, 장보기 완료 토글버튼
 
+  refreshPage() {
+    notifyListeners();
+  }
+
   changeSelectedToggle(bool changeValue) {}
 
   bool isSameDay(DateTime day) {
