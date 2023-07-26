@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:refrigerator_map/data/model/checklist.dart';
 import 'package:refrigerator_map/data/model/shopping.dart';
@@ -32,10 +33,13 @@ class ShoppingItem extends StatelessWidget {
           );
         } else {
           List<Shopping> shoppingData = snapshot.data;
+          // 장보기 완료 List
           List<Shopping> shoppingListIsDone =
               shoppingData.where((element) => element.isdone == true).toList();
+          // 장보기 미완료 List
           List<Shopping> shoppingList =
               shoppingData.where((element) => element.isdone == false).toList();
+
           return RenderListView(
               shoppingList: viewModel.isSelectedToggleBtn[0] == true
                   ? shoppingList
@@ -290,6 +294,8 @@ class RenderRichText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var date = DateTime.parse(shoppingList[index].regdate);
+    String dateString = DateFormat("yyyy-MM-dd").format(date);
     return RichText(
       text: TextSpan(
         style: DefaultTextStyle.of(context).style,
@@ -299,7 +305,7 @@ class RenderRichText extends StatelessWidget {
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           TextSpan(
-            text: ' ${shoppingList[index].regdate}\n',
+            text: ' $dateString \n',
             style: TextStyle(
               color: ColorList.grey,
               fontWeight: FontWeight.w700,

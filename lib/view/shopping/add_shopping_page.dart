@@ -35,7 +35,7 @@ class _AddShoppingPageState extends State<AddShoppingPage> {
               children: [
                 RenderListTile(label: "내용", controller: contentController),
                 RenderListTile(label: "금액", controller: amountController),
-                RenderListTile(label: "등록일", readOnly: true),
+                // RenderListTile(label: "등록일", readOnly: true),
                 RenderElevatedButton(
                   viewModel: viewModel,
                   widget: widget,
@@ -163,6 +163,7 @@ class RenderOKButton extends StatelessWidget {
             elevation: MaterialStateProperty.all(3)),
         onPressed: () {
           Navigator.pop(context);
+          context.read<ShoppingViewModel>().refreshPage();
         },
         child: Text(
           "확인",

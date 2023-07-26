@@ -93,8 +93,7 @@ class ShoppingPage extends StatelessWidget {
                     viewModel.addShopingList(
                       Shopping(
                         title: titleController.text,
-                        regdate:
-                            DateFormat.yMd().format(DateTime.now()).toString(),
+                        regdate: DateFormat('yyyyMMdd').format(DateTime.now()),
                         isdone: false,
                       ),
                     );
