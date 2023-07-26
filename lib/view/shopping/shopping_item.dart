@@ -9,6 +9,7 @@ import 'dart:developer' as developer;
 /// 장보기 item
 class ShoppingItem extends StatelessWidget {
   ShoppingItem({super.key});
+
   bool isChecked = false;
 
   @override
@@ -59,6 +60,7 @@ class RenderExpansionTile extends StatelessWidget {
   final int index;
   final List<Shopping> shoppingList;
   final String title;
+
   RenderExpansionTile({
     super.key,
     required this.index,
@@ -88,11 +90,34 @@ class RenderExpansionTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   RenderRichText(shoppingList: shoppingList, index: index),
-                  IconButton(
-                    iconSize: 20,
-                    color: Colors.orangeAccent,
-                    onPressed: () {},
-                    icon: Icon(Icons.edit_square),
+                  FutureBuilder(
+                    future: context
+                        .read<ShoppingViewModel>()
+                        .getShoppingListByTitle(title),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData == false) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            "Error : ${snapshot.error}",
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        );
+                      } else {
+                        var data = snapshot.data;
+                        return Switch(
+                          value: data.isdone,
+                          onChanged: (value) {
+                            context.read<ShoppingViewModel>().updateIsDone(
+                                data.id.toString(), value == true ? "1" : "0");
+                          },
+                        );
+                      }
+                    },
                   ),
                 ],
               ),
@@ -133,11 +158,13 @@ class RenderExpansionTile extends StatelessWidget {
 class RenderRichText extends StatelessWidget {
   final List<Shopping> shoppingList;
   final int index;
+
   const RenderRichText({
     super.key,
     required this.shoppingList,
     required this.index,
   });
+
   @override
   Widget build(BuildContext context) {
     return RichText(
