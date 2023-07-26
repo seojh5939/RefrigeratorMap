@@ -109,12 +109,21 @@ class RenderExpansionTile extends StatelessWidget {
                         );
                       } else {
                         var data = snapshot.data;
-                        return Switch(
-                          value: data.isdone,
-                          onChanged: (value) {
-                            context.read<ShoppingViewModel>().updateIsDone(
-                                data.id.toString(), value == true ? "1" : "0");
-                          },
+                        return Column(
+                          children: [
+                            Text(
+                              "장보기완료",
+                              style: TextStyle(fontSize: 10),
+                            ),
+                            Switch(
+                              value: data.isdone,
+                              onChanged: (value) {
+                                context.read<ShoppingViewModel>().updateIsDone(
+                                    data.id.toString(),
+                                    value == true ? "1" : "0");
+                              },
+                            ),
+                          ],
                         );
                       }
                     },
