@@ -90,44 +90,7 @@ class RenderExpansionTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   RenderRichText(shoppingList: shoppingList, index: index),
-                  FutureBuilder(
-                    future: context
-                        .read<ShoppingViewModel>()
-                        .getShoppingListByTitle(title),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasData == false) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "Error : ${snapshot.error}",
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        );
-                      } else {
-                        var data = snapshot.data;
-                        return Column(
-                          children: [
-                            Text(
-                              "장보기완료",
-                              style: TextStyle(fontSize: 10),
-                            ),
-                            Switch(
-                              value: data.isdone,
-                              onChanged: (value) {
-                                context.read<ShoppingViewModel>().updateIsDone(
-                                    data.id.toString(),
-                                    value == true ? "1" : "0");
-                              },
-                            ),
-                          ],
-                        );
-                      }
-                    },
-                  ),
+                  RenderSwitch(title: title),
                 ],
               ),
               children: snapshot.data,
@@ -160,6 +123,50 @@ class RenderExpansionTile extends StatelessWidget {
       ),
     );
     return widgetList;
+  }
+}
+
+class RenderSwitch extends StatelessWidget {
+  final String title;
+  const RenderSwitch({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: context.read<ShoppingViewModel>().getShoppingListByTitle(title),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData == false) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Error : ${snapshot.error}",
+              style: TextStyle(fontSize: 15),
+            ),
+          );
+        } else {
+          var data = snapshot.data;
+          return Column(
+            children: [
+              Text(
+                "장보기완료",
+                style: TextStyle(fontSize: 10),
+              ),
+              Switch(
+                value: data.isdone,
+                onChanged: (value) {
+                  context.read<ShoppingViewModel>().updateIsDone(
+                      data.id.toString(), value == true ? "1" : "0");
+                },
+              ),
+            ],
+          );
+        }
+      },
+    );
   }
 }
 

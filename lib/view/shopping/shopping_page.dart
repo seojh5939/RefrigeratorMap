@@ -43,6 +43,7 @@ class ShoppingPage extends StatelessWidget {
     );
   }
 
+  // 장보기 item 생성 다이얼로그
   Future<void> showAlartDialog() async {
     return showDialog(
       barrierDismissible: false,
@@ -68,7 +69,7 @@ class ShoppingPage extends StatelessWidget {
                 if (value == null || value.isEmpty) {
                   return '장보기 제목은 필수로 입력하셔야합니다.';
                 }
-                // TODO db타이틀 중복검사
+
                 return null;
               },
             ),
@@ -83,22 +84,32 @@ class ShoppingPage extends StatelessWidget {
                 var viewModel = GlobalAccessContext
                     .navigatorState.currentContext!
                     .read<ShoppingViewModel>();
-                // Insert DB
-                viewModel.addShopingList(
-                  Shopping(
-                    title: titleController.text,
-                    regdate: DateFormat.yMd().format(DateTime.now()).toString(),
-                    isdone: false,
-                  ),
-                );
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        AddShoppingPage(title: titleController.text),
-                  ),
-                );
+
+                viewModel
+                    .getShoppingListByTitle(titleController.text)
+                    .then((value) {
+                  if (value == null) {
+                    // Insert DB
+                    viewModel.addShopingList(
+                      Shopping(
+                        title: titleController.text,
+                        regdate:
+                            DateFormat.yMd().format(DateTime.now()).toString(),
+                        isdone: false,
+                      ),
+                    );
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            AddShoppingPage(title: titleController.text),
+                      ),
+                    );
+                  } else {
+                    RenderShowDialogForException(context);
+                  }
+                });
               }
             },
             child: Text("확인"),
@@ -108,6 +119,27 @@ class ShoppingPage extends StatelessWidget {
               Navigator.pop(context);
             },
             child: Text("취소"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 장보기 제목 중복시 보여줄 다이얼로그
+  void RenderShowDialogForException(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        alignment: Alignment.center,
+        content: Text("이미 존재합니다. 다른이름을 사용해주세요."),
+        contentTextStyle: TextStyle(fontSize: 17, color: Colors.black),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("확인"),
           ),
         ],
       ),
@@ -124,6 +156,7 @@ class RenderToggleButtons extends StatefulWidget {
 
 class _RenderToggleButtonsState extends State<RenderToggleButtons> {
   final List<bool> _isSelected = [true, false];
+
   @override
   Widget build(BuildContext context) {
     return ToggleButtons(
