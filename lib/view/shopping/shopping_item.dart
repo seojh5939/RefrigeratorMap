@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:refrigerator_map/data/model/checklist.dart';
 import 'package:refrigerator_map/data/model/shopping.dart';
 import 'package:refrigerator_map/style/color.dart';
+import 'package:refrigerator_map/view/shopping/add_shopping_page.dart';
 import 'package:refrigerator_map/viewModel/shopping_viewmodel.dart';
 import 'dart:developer' as developer;
 
 /// 장보기 item
 class ShoppingItem extends StatelessWidget {
   ShoppingItem({super.key});
+
   bool isChecked = false;
 
   @override
@@ -29,20 +32,18 @@ class ShoppingItem extends StatelessWidget {
             ),
           );
         } else {
-          List<Shopping> shoppingList = snapshot.data;
-          return ListView.builder(
-            shrinkWrap: true,
-            primary: false,
-            itemCount: shoppingList.length,
-            itemBuilder: (context, index) {
-              // 장보기 제목 && 체크박스
-              return RenderExpansionTile(
-                index: index,
-                title: shoppingList[index].title,
-                shoppingList: shoppingList,
-              );
-            },
-          );
+          List<Shopping> shoppingData = snapshot.data;
+          // 장보기 완료 List
+          List<Shopping> shoppingListIsDone =
+              shoppingData.where((element) => element.isdone == true).toList();
+          // 장보기 미완료 List
+          List<Shopping> shoppingList =
+              shoppingData.where((element) => element.isdone == false).toList();
+
+          return RenderListView(
+              shoppingList: viewModel.isSelectedToggleBtn[0] == true
+                  ? shoppingList
+                  : shoppingListIsDone);
         }
       },
     );
@@ -54,11 +55,35 @@ class ShoppingItem extends StatelessWidget {
       await viewModel.getAllShoppingList();
 }
 
+class RenderListView extends StatelessWidget {
+  final List<Shopping> shoppingList;
+
+  const RenderListView({super.key, required this.shoppingList});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      primary: false,
+      itemCount: shoppingList.length,
+      itemBuilder: (context, index) {
+        // 장보기 제목 && 체크박스
+        return RenderExpansionTile(
+          index: index,
+          title: shoppingList[index].title,
+          shoppingList: shoppingList,
+        );
+      },
+    );
+  }
+}
+
 /// 장보기 제목&&체크박스
 class RenderExpansionTile extends StatelessWidget {
   final int index;
   final List<Shopping> shoppingList;
   final String title;
+
   RenderExpansionTile({
     super.key,
     required this.index,
@@ -69,37 +94,119 @@ class RenderExpansionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _createCheckBoxListTileWidgetLists(context),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData == false) {
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                "Error : ${snapshot.error}",
-                style: TextStyle(fontSize: 15),
+      future: _createCheckBoxListTileWidgetLists(context),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData == false) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Error : ${snapshot.error}",
+              style: TextStyle(fontSize: 15),
+            ),
+          );
+        } else {
+          return Dismissible(
+            key: UniqueKey(),
+            background: Container(
+              color: Colors.amber,
+              child: Padding(
+                padding: EdgeInsets.only(left: 40),
+                child: Align(
+                    alignment: Alignment.centerLeft, child: Icon(Icons.edit)),
               ),
-            );
-          } else {
-            return ExpansionTile(
+            ),
+            secondaryBackground: Container(
+              color: Colors.red,
+              child: Padding(
+                padding: EdgeInsets.only(right: 40),
+                child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Icon(Icons.delete)),
+              ),
+            ),
+            onDismissed: (direction) {
+              if (direction == DismissDirection.startToEnd) {
+                print("Edit");
+              } else {
+                print("remove");
+              }
+            },
+            confirmDismiss: (direction) {
+              if (direction == DismissDirection.startToEnd) {
+                return _showDialogEditOrRemove(
+                  context,
+                  "수정하기",
+                  "수정하시겠습니까?",
+                  () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => AddShoppingPage(title: title),
+                      ),
+                    );
+                  },
+                  () {
+                    Navigator.pop(context);
+                    context.read<ShoppingViewModel>().refreshPage();
+                  },
+                );
+              } else {
+                return _showDialogEditOrRemove(
+                  context,
+                  "삭제하기",
+                  "삭제하시겠습니까?",
+                  () {
+                    Navigator.pop(context);
+                    context
+                        .read<ShoppingViewModel>()
+                        .removeShoppingList(shoppingList[index].id!);
+                  },
+                  () {
+                    Navigator.pop(context);
+                    context.read<ShoppingViewModel>().refreshPage();
+                  },
+                );
+              }
+            },
+            child: ExpansionTile(
               initiallyExpanded: true,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   RenderRichText(shoppingList: shoppingList, index: index),
-                  IconButton(
-                    iconSize: 20,
-                    color: Colors.orangeAccent,
-                    onPressed: () {},
-                    icon: Icon(Icons.edit_square),
-                  ),
+                  RenderSwitch(title: title),
                 ],
               ),
               children: snapshot.data,
-            );
-          }
-        });
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Future<bool?> _showDialogEditOrRemove(BuildContext context, String label,
+      String content, void Function() onConfirm, void Function() onCancel) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(label),
+        content: Text(content),
+        actions: [
+          TextButton(
+            onPressed: onConfirm,
+            child: Text("확인"),
+          ),
+          TextButton(
+            onPressed: onCancel,
+            child: Text("취소"),
+          ),
+        ],
+      ),
+    );
   }
 
   /// CheckBoxListTile 생성 후 Widget에 Add
@@ -129,17 +236,66 @@ class RenderExpansionTile extends StatelessWidget {
   }
 }
 
+class RenderSwitch extends StatelessWidget {
+  final String title;
+
+  const RenderSwitch({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: context.read<ShoppingViewModel>().getShoppingListByTitle(title),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData == false) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Error : ${snapshot.error}",
+              style: TextStyle(fontSize: 15),
+            ),
+          );
+        } else {
+          var data = snapshot.data;
+          return Column(
+            children: [
+              Text(
+                "장보기완료",
+                style: TextStyle(fontSize: 10),
+              ),
+              Switch(
+                value: data.isdone,
+                onChanged: (value) {
+                  context.read<ShoppingViewModel>().updateIsDone(
+                      data.id.toString(), value == true ? "1" : "0");
+                },
+              ),
+            ],
+          );
+        }
+      },
+    );
+  }
+}
+
 /// 장보기 목록 제목, 날짜, 금액
 class RenderRichText extends StatelessWidget {
   final List<Shopping> shoppingList;
   final int index;
+
   const RenderRichText({
     super.key,
     required this.shoppingList,
     required this.index,
   });
+
   @override
   Widget build(BuildContext context) {
+    var date = DateTime.parse(shoppingList[index].regdate);
+    String dateString = DateFormat("yyyy-MM-dd").format(date);
     return RichText(
       text: TextSpan(
         style: DefaultTextStyle.of(context).style,
@@ -149,7 +305,7 @@ class RenderRichText extends StatelessWidget {
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           TextSpan(
-            text: ' ${shoppingList[index].regdate}\n',
+            text: ' $dateString \n',
             style: TextStyle(
               color: ColorList.grey,
               fontWeight: FontWeight.w700,

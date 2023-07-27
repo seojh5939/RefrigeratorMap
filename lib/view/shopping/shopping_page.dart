@@ -26,7 +26,7 @@ class ShoppingPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              CustomCalendar(widgetName: context.widget.toString()),
+              // CustomCalendar(widgetName: context.widget.toString()),
               RenderToggleButtons(),
               ShoppingItem(),
             ],
@@ -43,6 +43,7 @@ class ShoppingPage extends StatelessWidget {
     );
   }
 
+  // 장보기 item 생성 다이얼로그
   Future<void> showAlartDialog() async {
     return showDialog(
       barrierDismissible: false,
@@ -68,7 +69,7 @@ class ShoppingPage extends StatelessWidget {
                 if (value == null || value.isEmpty) {
                   return '장보기 제목은 필수로 입력하셔야합니다.';
                 }
-                // TODO db타이틀 중복검사
+
                 return null;
               },
             ),
@@ -83,22 +84,31 @@ class ShoppingPage extends StatelessWidget {
                 var viewModel = GlobalAccessContext
                     .navigatorState.currentContext!
                     .read<ShoppingViewModel>();
-                // Insert DB
-                viewModel.addShopingList(
-                  Shopping(
-                    title: titleController.text,
-                    regdate: DateFormat.yMd().format(DateTime.now()).toString(),
-                    isdone: false,
-                  ),
-                );
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        AddShoppingPage(title: titleController.text),
-                  ),
-                );
+
+                viewModel
+                    .getShoppingListByTitle(titleController.text)
+                    .then((value) {
+                  if (value == null) {
+                    // Insert DB
+                    viewModel.addShopingList(
+                      Shopping(
+                        title: titleController.text,
+                        regdate: DateFormat('yyyyMMdd').format(DateTime.now()),
+                        isdone: false,
+                      ),
+                    );
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            AddShoppingPage(title: titleController.text),
+                      ),
+                    );
+                  } else {
+                    RenderShowDialogForException(context);
+                  }
+                });
               }
             },
             child: Text("확인"),
@@ -108,6 +118,27 @@ class ShoppingPage extends StatelessWidget {
               Navigator.pop(context);
             },
             child: Text("취소"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 장보기 제목 중복시 보여줄 다이얼로그
+  void RenderShowDialogForException(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        alignment: Alignment.center,
+        content: Text("이미 존재합니다. 다른이름을 사용해주세요."),
+        contentTextStyle: TextStyle(fontSize: 17, color: Colors.black),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("확인"),
           ),
         ],
       ),
@@ -123,21 +154,13 @@ class RenderToggleButtons extends StatefulWidget {
 }
 
 class _RenderToggleButtonsState extends State<RenderToggleButtons> {
-  final List<bool> _isSelected = [true, false];
   @override
   Widget build(BuildContext context) {
+    var viewModel = context.read<ShoppingViewModel>();
     return ToggleButtons(
-      onPressed: (index) {
-        setState(
-          () {
-            for (int i = 0; i < _isSelected.length; i++) {
-              _isSelected[i] = i == index;
-            }
-          },
-        );
-      },
+      onPressed: (index) => viewModel.changeSelectedToggle(index),
       fillColor: Colors.black,
-      isSelected: _isSelected,
+      isSelected: context.watch<ShoppingViewModel>().isSelectedToggleBtn,
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -145,7 +168,11 @@ class _RenderToggleButtonsState extends State<RenderToggleButtons> {
             "장보기 목록",
             style: TextStyle(
               fontSize: 17,
-              color: _isSelected[0] == true ? ColorList.white : ColorList.black,
+              color:
+                  context.watch<ShoppingViewModel>().isSelectedToggleBtn[0] ==
+                          true
+                      ? ColorList.white
+                      : ColorList.black,
             ),
           ),
         ),
@@ -155,7 +182,11 @@ class _RenderToggleButtonsState extends State<RenderToggleButtons> {
             "장보기 완료",
             style: TextStyle(
               fontSize: 17,
-              color: _isSelected[1] == true ? ColorList.white : ColorList.black,
+              color:
+                  context.watch<ShoppingViewModel>().isSelectedToggleBtn[1] ==
+                          true
+                      ? ColorList.white
+                      : ColorList.black,
             ),
           ),
         ),

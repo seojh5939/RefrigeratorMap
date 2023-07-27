@@ -11,9 +11,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0366230d-90b5-47e2-97b1-0c044d0398c9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/view/home/add_refrigerator_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/home/add_refrigerator_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/view/home/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/home/home_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/viewModel/main_viewmodel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/viewModel/main_viewmodel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/view/shopping/shopping_item.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/shopping/shopping_item.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/view/shopping/shopping_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/shopping/shopping_page.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,12 +39,12 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="feature/home" />
-                    <option name="lastUsedInstant" value="1689917177" />
+                    <option name="branchName" value="feature/shoppingPage" />
+                    <option name="lastUsedInstant" value="1690336372" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="dev" />
-                    <option name="lastUsedInstant" value="1689917176" />
+                    <option name="lastUsedInstant" value="1690200259" />
                   </RecentBranch>
                 </list>
               </option>
@@ -64,6 +63,12 @@
     </option>
   </component>
   <component name="GithubPullRequestsUISettings">
+    <option name="recentNewPullRequestHead">
+      <RepoCoordinatesHolder>
+        <option name="owner" value="seojh5939" />
+        <option name="repository" value="RefrigeratorMap" />
+      </RepoCoordinatesHolder>
+    </option>
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
         <option name="accountId" value="5a2340ca-d40f-493f-ba03-22411b7ae1cc" />

@@ -26,7 +26,7 @@ class ShoppingService {
     return Shopping.toList(result);
   }
 
-  Future<List<Shopping>> getDateShoppingList(String date) async {
+  Future<List<Shopping>> getShoppingListByRegDate(String date) async {
     var db = await DBHelper.instance.database;
     String sql = '''
       SELECT * FROM ${Shopping.tableName} WHERE ${ShoppingField.regdate} = '$date'
@@ -34,6 +34,17 @@ class ShoppingService {
     var args = [];
     List<Map>? result = await db.rawQuery(sql, args);
     return Shopping.toList(result);
+  }
+
+  Future<Shopping?> getShoppingListByTitle(String title) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+      SELECT * FROM ${Shopping.tableName} WHERE ${ShoppingField.title} = '$title'
+    ''';
+    var args = [];
+    List<Map>? result = await db.rawQuery(sql, args);
+    List<Shopping> list = Shopping.toList(result);
+    return list.firstOrNull;
   }
 
   updateShoppingList(args) async {
@@ -48,6 +59,21 @@ class ShoppingService {
     ''';
     await db.transaction((txn) async {
       return await txn.rawUpdate(sql, args);
+    });
+  }
+
+  updateIsDone(String id, String isdone) async {
+    var db = await DBHelper.instance.database;
+    String sql = '''
+    UPDATE
+        ${Shopping.tableName} 
+      SET
+        ${ShoppingField.isdone} = ?
+      WHERE
+        ${ShoppingField.id} = ?
+    ''';
+    await db.transaction((txn) async {
+      return await txn.rawUpdate(sql, [isdone, id]);
     });
   }
 

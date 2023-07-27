@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:refrigerator_map/data/db/service/checklist_service.dart';
 import 'package:refrigerator_map/data/db/service/shopping_service.dart';
 import 'package:refrigerator_map/data/model/checklist.dart';
 import 'package:refrigerator_map/data/model/shopping.dart';
-import 'package:refrigerator_map/main.dart';
 
 /// 장보기 ViewModel
 class ShoppingViewModel extends ChangeNotifier {
@@ -14,9 +11,18 @@ class ShoppingViewModel extends ChangeNotifier {
 
   DateTime focusedDay = DateTime.now();
   DateTime? selectedDay;
-  List<bool> isSelectedToggleBtn = [true, false];
+  List<bool> isSelectedToggleBtn = [true, false]; // 장보기 목록, 장보기 완료 토글버튼
 
-  changeSelectedToggle(bool changeValue) {}
+  refreshPage() {
+    notifyListeners();
+  }
+
+  changeSelectedToggle(int index) {
+    for (int i = 0; i < isSelectedToggleBtn.length; i++) {
+      isSelectedToggleBtn[i] = i == index;
+    }
+    notifyListeners();
+  }
 
   bool isSameDay(DateTime day) {
     return selectedDay == day;
@@ -33,7 +39,11 @@ class ShoppingViewModel extends ChangeNotifier {
   }
 
   Future<List<Shopping>> getShoppingList(String date) async {
-    return await _shoppingService.getDateShoppingList(date);
+    return await _shoppingService.getShoppingListByRegDate(date);
+  }
+
+  Future<Shopping?> getShoppingListByTitle(String title) async {
+    return await _shoppingService.getShoppingListByTitle(title);
   }
 
   addShopingList(Shopping data) {
@@ -49,6 +59,11 @@ class ShoppingViewModel extends ChangeNotifier {
   updateShoppingList(Shopping data) {
     _shoppingService
         .updateShoppingList([data.title, data.regdate, data.isdone, data.id]);
+    notifyListeners();
+  }
+
+  updateIsDone(String id, String isdone) {
+    _shoppingService.updateIsDone(id, isdone);
     notifyListeners();
   }
 
