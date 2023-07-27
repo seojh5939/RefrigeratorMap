@@ -188,9 +188,9 @@ class RenderExpansionTile extends StatelessWidget {
     );
   }
 
-  _showDialogEditOrRemove(BuildContext context, String label, String content,
-      void Function() onConfirm, void Function() onCancel) {
-    showDialog(
+  Future<bool?> _showDialogEditOrRemove(BuildContext context, String label,
+      String content, void Function() onConfirm, void Function() onCancel) {
+    return showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(label),

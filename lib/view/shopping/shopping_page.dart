@@ -26,7 +26,7 @@ class ShoppingPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              CustomCalendar(widgetName: context.widget.toString()),
+              // CustomCalendar(widgetName: context.widget.toString()),
               RenderToggleButtons(),
               ShoppingItem(),
             ],
