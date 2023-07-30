@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -176,7 +178,8 @@ class RenderExpansionTile extends StatelessWidget {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  RenderRichText(shoppingList: shoppingList, index: index),
+                  RenderRichText(
+                      title: title, shoppingList: shoppingList, index: index),
                   RenderSwitch(title: title),
                 ],
               ),
@@ -283,11 +286,13 @@ class RenderSwitch extends StatelessWidget {
 
 /// 장보기 목록 제목, 날짜, 금액
 class RenderRichText extends StatelessWidget {
+  final String title;
   final List<Shopping> shoppingList;
   final int index;
 
   const RenderRichText({
     super.key,
+    required this.title,
     required this.shoppingList,
     required this.index,
   });
@@ -296,44 +301,51 @@ class RenderRichText extends StatelessWidget {
   Widget build(BuildContext context) {
     var date = DateTime.parse(shoppingList[index].regdate);
     String dateString = DateFormat("yyyy-MM-dd").format(date);
-    return RichText(
-      text: TextSpan(
-        style: DefaultTextStyle.of(context).style,
-        children: <TextSpan>[
-          TextSpan(
-            text: '${shoppingList[index].title} ',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          TextSpan(
-            text: ' $dateString \n',
-            style: TextStyle(
-              color: ColorList.grey,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          TextSpan(
-            text:
-                '지출\u{1F4B8}: ${totalAmount(context, shoppingList[index].title)}원',
-            style: TextStyle(
-              color: Colors.yellow[800],
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ],
-      ),
-    );
+    return FutureBuilder(
+        future: totalAmount(context, title),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData == false) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                "Error : ${snapshot.error}",
+                style: TextStyle(fontSize: 15),
+              ),
+            );
+          } else {
+            int amount = snapshot.data;
+            return RichText(
+              text: TextSpan(
+                style: DefaultTextStyle.of(context).style,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: '${shoppingList[index].title} ',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: ' $dateString \n',
+                    style: TextStyle(
+                      color: ColorList.grey,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  TextSpan(
+                    text: '지출\u{1F4B8}: $amount원',
+                    style: TextStyle(
+                      color: Colors.yellow[800],
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        });
   }
 
   /// 장보기 금액 투두리스트 총합
-  int totalAmount(BuildContext context, String title) {
-    int total = 0;
-    context.read<ShoppingViewModel>().getTotalAmount(title).then(
-      (value) {
-        total += value;
-      },
-    ).catchError((error) {
-      developer.log("getAllCheckList is Error : ", error: error);
-    });
-    return total;
-  }
+  Future<int> totalAmount(BuildContext context, String title) async =>
+      await context.read<ShoppingViewModel>().getTotalAmount(title);
 }
