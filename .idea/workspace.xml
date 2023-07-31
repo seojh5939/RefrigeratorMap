@@ -10,9 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0366230d-90b5-47e2-97b1-0c044d0398c9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/view/shopping/shopping_item.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/shopping/shopping_item.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/view/shopping/shopping_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view/shopping/shopping_page.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +30,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+  }
+}]]></component>
   <component name="GitToolBoxStore">
     <option name="recentBranches">
       <RecentBranches>
@@ -38,6 +42,10 @@
             <RecentBranchesForRepo>
               <option name="branches">
                 <list>
+                  <RecentBranch>
+                    <option name="branchName" value="fix/shoppingPage" />
+                    <option name="lastUsedInstant" value="1690759677" />
+                  </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="feature/shoppingPage" />
                     <option name="lastUsedInstant" value="1690336372" />
@@ -53,13 +61,6 @@
           </list>
         </option>
       </RecentBranches>
-    </option>
-  </component>
-  <component name="GithubProjectSettings">
-    <option name="branchProtectionPatterns">
-      <list>
-        <option value="dev" />
-      </list>
     </option>
   </component>
   <component name="GithubPullRequestsUISettings">
@@ -119,7 +120,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "preferences.intentionPowerPack",
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>
@@ -132,6 +133,7 @@
       <option name="presentableId" value="Default" />
       <updated>1689734355533</updated>
     </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
