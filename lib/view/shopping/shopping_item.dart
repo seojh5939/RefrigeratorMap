@@ -12,9 +12,9 @@ import 'dart:developer' as developer;
 
 /// 장보기 item
 class ShoppingItem extends StatelessWidget {
-  ShoppingItem({super.key});
+  const ShoppingItem({super.key});
 
-  bool isChecked = false;
+  // bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {

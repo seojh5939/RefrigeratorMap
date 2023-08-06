@@ -24,12 +24,15 @@ class ShoppingPage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // CustomCalendar(widgetName: context.widget.toString()),
-              RenderToggleButtons(),
-              ShoppingItem(),
-            ],
+          child: Consumer<ShoppingViewModel>(
+            builder: (context, viewModel, child) {
+              return Column(
+                children: [
+                  RenderToggleButtons(),
+                  ShoppingItem(),
+                ],
+              );
+            },
           ),
         ),
       ),

@@ -10,18 +10,18 @@ class CustomCalendar extends StatelessWidget {
   CustomCalendar({
     required this.widgetName,
   }) {
-    viewModel = widgetName == "ShoppingPage"
-        ? GlobalAccessContext.navigatorState.currentContext!
-            .read<ShoppingViewModel>()
-        : GlobalAccessContext.navigatorState.currentContext!
-            .read<DietViewModel>();
-    focusedDay = widgetName == "ShoppingPage"
-        ? GlobalAccessContext.navigatorState.currentContext!
-            .watch<ShoppingViewModel>()
-            .focusedDay
-        : GlobalAccessContext.navigatorState.currentContext!
-            .watch<DietViewModel>()
-            .focusedDay;
+    // viewModel = widgetName == "ShoppingPage"
+    //     ? GlobalAccessContext.navigatorState.currentContext!
+    //         .read<ShoppingViewModel>()
+    //     : GlobalAccessContext.navigatorState.currentContext!
+    //         .read<DietViewModel>();
+    // focusedDay = widgetName == "ShoppingPage"
+    //     ? GlobalAccessContext.navigatorState.currentContext!
+    //         .watch<ShoppingViewModel>()
+    //         .focusedDay
+    //     : GlobalAccessContext.navigatorState.currentContext!
+    //         .watch<DietViewModel>()
+    //         .focusedDay;
   }
 
   String widgetName;
@@ -30,6 +30,7 @@ class CustomCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    viewModel = context.read<ShoppingViewModel>();
     return TableCalendar(
       headerStyle: HeaderStyle(
         formatButtonVisible: false,
@@ -37,7 +38,7 @@ class CustomCalendar extends StatelessWidget {
         leftChevronVisible: false,
         rightChevronVisible: false,
       ),
-      focusedDay: focusedDay,
+      focusedDay: context.watch<ShoppingViewModel>().focusedDay,
       firstDay: DateTime(2023, 1, 1),
       lastDay: DateTime(9999, 12, 31),
       locale: 'ko-KR',

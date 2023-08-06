@@ -55,8 +55,12 @@ class _AddShoppingPageState extends State<AddShoppingPage> {
                 ),
               ],
             ),
-            RenderCheckBoxListTile(
-              title: widget.title,
+            Consumer<ShoppingViewModel>(
+              builder: (context, viewModel, child) {
+                return RenderCheckBoxListTile(
+                  title: widget.title,
+                );
+              },
             ),
             RenderOKButton(),
           ],
